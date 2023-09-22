@@ -1,0 +1,29 @@
+# Archivos y directorios generados por Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.sqlite3
+
+# Directorio virtualenv
+venv/
+env/
+
+# Archivo de configuración local (si se usa)
+settings_local.py
+
+# Archivos de registro (logs)
+log/
+*.log
+
+# Archivos y directorios específicos de IDEs
+.vscode/
+.idea/
+*.swp
+
+# Otros archivos y directorios generados durante el desarrollo
+
+
+# Archivos de respaldo de bases de datos
+*.sql
+*.db
