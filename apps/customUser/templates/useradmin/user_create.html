@@ -1,0 +1,107 @@
+{% extends 'admin/dashboard_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content_dashboar %}
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
+
+            <div class="filter">
+                <div class="icon">
+                    <a class="icon" href="" data-bs-toggle="tooltip" data-bs-placement="top"
+                       data-bs-original-title="nueva queja"><i class="bi bi-file-earmark-plus-fill"></i></a>
+                </div>
+
+
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">Usuario </h5>
+
+                <form id="queja-form" class="row g-3 needs-validation" novalidate method="post">
+                    {% csrf_token %}
+
+                    <div class="col-md-12">
+                        {{ form.departamento.label_tag }}
+                        {{ form.departamento }}
+                        {% if form.departamento.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.departamento.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.first_name.label_tag }}
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.first_name.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.last_name.label_tag }}
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.last_name.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.email.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.role.label_tag }}
+                        {{ form.role }}
+                        {% if form.role.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.role.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="col-md-6">
+                        {{ form.confirm_password.label_tag }}
+                        {{ form.confirm_password }}
+                        {% if form.confirm_password.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.confirm_password.errors|join:", " }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <button class="btn btn-success w-100" type="submit">Enviar</button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a href="{% url 'home_admin' %}" class="btn btn-danger w-100" type="submit">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

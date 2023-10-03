@@ -3,9 +3,28 @@ from apps.customUser.models import User
 
 
 class Queja(models.Model):
+    MUNICIPIOS_CHOICES = [
+        ('arroyo_naranjo', 'Arroyo Naranjo'),
+        ('boyeros', 'Boyeros'),
+        ('centro_habana', 'Centro Habana'),
+        ('cerro', 'Cerro'),
+        ('cotorro', 'Cotorro'),
+        ('diez_de_octubre', 'Diez de Octubre'),
+        ('guanabacoa', 'Guanabacoa'),
+        ('habana_del_este', 'Habana del Este'),
+        ('habana_vieja', 'Habana Vieja'),
+        ('la_lisa', 'La Lisa'),
+        ('mantilla', 'Mantilla'),
+        ('marianao', 'Marianao'),
+        ('playa', 'Playa'),
+        ('plaza', 'Plaza de la Revolución'),
+        ('regla', 'Regla'),
+        ('san_miguel_del_padron', 'San Miguel del Padrón'),
+    ]
     recurrente = models.ForeignKey(User, on_delete=models.PROTECT)
     asunto = models.CharField(max_length=200)
-    municipio = models.CharField(max_length=100)
+    municipio = models.CharField(max_length=100, choices=MUNICIPIOS_CHOICES)
+    descripcion = models.TextField(max_length=100,null=True,blank=True)
     procesado = models.BooleanField(default=False)
     enTramite = models.BooleanField(default=False)
     departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='quejas', null=True, blank=True)
@@ -47,6 +66,9 @@ class Documento(models.Model):
 class Departamento(models.Model):
     nombre = models.CharField(max_length=200)
     usuarios = models.ManyToManyField(User, related_name='departamentos', null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Tramite(models.Model):

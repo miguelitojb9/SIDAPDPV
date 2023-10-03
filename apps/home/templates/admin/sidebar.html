@@ -15,17 +15,17 @@
         <!--  Clientes Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-person"></i></i><span>Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-person"></i></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="forms-elements.html">
-                        <i class="bi bi-circle"></i><span>Form Elements</span>
+                    <a href="{% url 'home_admin' %}">
+                        <i class="bi bi-circle"></i><span>Admin</span>
                     </a>
                 </li>
                 <!-- End Register Page Nav -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="pages-register.html">
+                    <a class="nav-link collapsed" href="{% url 'user_create' %}">
                         <i class="bi bi-card-list"></i>
                         <span>Registrar un </span>
                     </a>
@@ -38,15 +38,22 @@
         <li class="nav-heading">Pages</li>
         <!--  Cake Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
-                <i class="bi bi-menu-button-wide"></i><span>Cake</span><i
+            <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
+                <i class="bi bi-menu-button-wide"></i><span>Quejas</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" >
+            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="" >
-                        <i class="bi bi-circle"></i><span>Bases</span>
-                    </a>
+                    {% if user.role == 'client' %}
+                        <a href="{% url 'quejas_list' %}">
+                            <i class="bi bi-circle "></i><span>Mis Quejas</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'quejas_list' %}">
+                            <i class="bi bi-circle "></i><span>Quejas</span>
+                        </a>
+                    {% endif %}
+
                 </li>
                 <li>
                     <a href="">

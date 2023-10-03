@@ -1,0 +1,107 @@
+{% extends 'admin/dashboard_admin.html' %}
+{% load static %}
+
+
+{% block content_dashboar %}
+    <section class="section contact">
+
+        <div class="row gy-4">
+            <div class="col-xl-8">
+                <div class="card recent-sales overflow-auto">
+
+                    <div class="filter">
+                        <div class="icon">
+                            <a class="icon" href="{% url 'user_create' %}" data-bs-toggle="tooltip"
+                               data-bs-placement="top" data-bs-original-title="nuevo usuario"><i
+                                    class="bi bi-file-earmark-plus-fill"></i></a>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Usuarios <span>| Today</span></h5>
+
+                        <table class="table table-borderless datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">departamento</th>
+                                <th scope="col">Rol</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if usuarios %}
+                                {% for user in usuarios %}
+                                    <tr>
+                                        <th scope="row"><a href="#">{{ user.id }}</a></th>
+                                        <th >{{ user.first_name }}</th>
+                                        <th >{{ user.email }}</th>
+                                        <th >{{ user.departamentos.first }}</th>
+                                        <th >{{ user.role }}</th>
+
+
+
+                                    </tr>
+                                {% endfor %}
+
+
+                            {% else %}
+                                <tr>
+                                    <th scope="row"><a href="#">nada para mostrar</a></th>
+
+                                </tr>
+                            {% endif %}
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="info-box card">
+                            <i class="ri-map-pin-user-line"></i>
+                            <h3>Usuarios</h3>
+                            <p>Total: {{ usuarios_c }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="info-box card">
+                            <i class="ri-home-gear-line"></i>
+                            <h3>Departamentos</h3>
+                            <p>Total: {{ cant_departamentos }}<br> Usuarios: {{ usuarios_en_departamentos }}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="info-box card">
+                            <i class="bi bi-envelope"></i>
+                            <h3>Organismos</h3>
+                            <p>info@example.com<br>contact@example.com</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+{% endblock %}
+
+

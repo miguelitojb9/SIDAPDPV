@@ -1,5 +1,6 @@
 from django import forms
 from .models import User
+from ..siapdpv.models import Departamento
 
 
 class RegistrationForm(forms.ModelForm):
@@ -8,7 +9,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'password']
+        fields = ['email', 'first_name', 'last_name', 'ci', 'gender', 'address', 'municipality', 'profile_photo', 'password']
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
@@ -28,6 +29,30 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 
+
 class LoginForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+
+
+class UserForm(forms.ModelForm):
+    departamento = forms.ModelChoiceField(
+        label="Departamento",
+        queryset=Departamento.objects.all(),
+        widget=forms.Select(attrs={"class": "form-select"})
+    )
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'role', 'password']
+        widgets = {
+            'first_name': forms.TextInput(attrs={"class": "form-control"}),
+            'last_name': forms.TextInput(attrs={"class": "form-control"}),
+            'email': forms.EmailInput(attrs={"class": "form-control"}),
+            'role': forms.Select(attrs={"class": "form-select"}),
+            'password': forms.PasswordInput(attrs={"class": "form-control"}),
+        }

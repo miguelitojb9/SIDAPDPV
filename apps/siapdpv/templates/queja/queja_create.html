@@ -1,0 +1,146 @@
+{% extends 'admin/dashboard_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block left_side_columns %}
+
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
+
+            {#                                <div class="filter">#}
+            {#                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>#}
+            {#                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">#}
+            {#                                        <li class="dropdown-header text-start">#}
+            {#                                            <h6>Filter</h6>#}
+            {#                                        </li>#}
+            {##}
+            {#                                        <li><a class="dropdown-item" href="#">Today</a></li>#}
+            {#                                        <li><a class="dropdown-item" href="#">This Month</a></li>#}
+            {#                                        <li><a class="dropdown-item" href="#">This Year</a></li>#}
+            {#                                    </ul>#}
+            {#                                </div>#}
+
+            <div class="card-body">
+                <h5 class="card-title">Nueva Queja <span>| {{ user.first_name }}</span></h5>
+
+                <form id="queja-form" class="row g-3 needs-validation" novalidate method="post">
+                    {% csrf_token %}
+
+                    <div class="col-md-6">
+                        {{ form| crispy }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="archivos" class="form-label">Archivos</label>
+                            <input class="form-control" type="file" id="archivos" name="archivos" multiple>
+                        </div>
+                    </div>
+                    <div class="col-md-6 "></div>
+                    <div class="col-md-3 ">
+                        <button class="btn btn-success w-100" type="submit">Enviar</button>
+                    </div>
+                    <div class="col-md-3 ">
+                        <a href="{% url 'quejas_list' %}"
+                           class="btn btn-danger w-100" type="submit">Cancelar</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block right_side_columns %}
+    <div id="preview-container"></div>
+    <div id="info-container"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#archivos').change(function () {
+                var previewContainer = $('#preview-container');
+                previewContainer.empty();
+
+                var files = $(this)[0].files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var fileType = file.type;
+                        var validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                        var validDocumentTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+
+                        if (validImageTypes.includes(fileType)) {
+                            previewContainer.append('<img src="' + e.target.result + '" class="img-thumbnail" alt="' + file.name + '">');
+                        } else if (validDocumentTypes.includes(fileType)) {
+                            if (fileType === 'application/pdf') {
+                                previewContainer.append('<p>Nombre del archivo: ' + file.name + '</p>');
+                                previewContainer.append('<embed src="' + e.target.result + '#toolbar=0" type="' + fileType + '" width="100%" height="400px" />');
+                            } else {
+                                previewContainer.append('<p>Nombre del archivo: ' + file.name + '</p>');
+                                previewContainer.append('<p>Tipo de archivo: ' + file.type + '</p>');
+                            }
+                        } else {
+                            previewContainer.append('<p>Archivo no válido: ' + file.name + '</p>');
+                        }
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Resto del código...
+
+
+            $('#queja-form').submit(function (e) {
+
+                e.preventDefault(); // Evita el envío del formulario por defecto
+
+                // Obtén los datos del formulario
+                var formData = new FormData(this);
+
+                // Agrega los datos adicionales del usuario
+                formData.append('recurrente', '{{ request.user.id }}');
+                formData.append('municipio', '{{ request.user.municipio }}');
+
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    url: '/siapdpv/quejas_create/',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        // Verifica si el formulario se envió correctamente
+                        if (response.success) {
+                            // Muestra una notificación de éxito con SweetAlert
+                            mostrarNotificacion('success', 'top-end', 'El formulario se envió correctamente.');
+
+
+                            // Limpiar los componentes del formulario
+                            $('#queja-form')[0].reset();
+                            var previewContainer = $('#preview-container');
+                            previewContainer.empty();
+                        } else {
+                            // Muestra una notificación de error si el formulario no se envió correctamente
+                            mostrarNotificacion('error', 'top-end', 'Hubo un problema al enviar el formulario.');
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        // Maneja el error de la solicitud AJAX
+
+                        // Realiza cualquier otra acción necesaria
+                        mostrarNotificacion('error', 'top-end', error);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+{% endblock %}
