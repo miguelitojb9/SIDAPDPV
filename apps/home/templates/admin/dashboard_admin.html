@@ -258,9 +258,9 @@
             <h1>Dashboard</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
                     {% block pagetitle_section %}
-                        <li class="breadcrumb-item active">Dashboard</li>
+
                     {% endblock %}
 
 
@@ -280,9 +280,7 @@
                                 <!-- Sales Card -->
                                 {% include 'admin/salescard.html' %}
                                 <!-- End Sales Card -->
-                                <!-- Reports -->
-                                {% include 'admin/reports.html' %}
-                                <!-- End Reports -->
+
                                 <!-- Recent Sales -->
                                 {% include 'admin/recentsales.html' %}
                                 <!-- End Recent Sales -->
@@ -300,9 +298,12 @@
                                 <!-- Website Traffic -->
                                 {% include 'admin/websitetraffic.html' %}
                                 <!-- End Website Traffic -->
-                                <!-- Top Selling -->
-                                {% include 'admin/topselling.html' %}
-                                <!-- End Top Selling -->
+                                 <!-- Reports -->
+                                {% include 'admin/reports.html' %}
+                                <!-- End Reports -->
+{#                                <!-- Top Selling -->#}
+{#                                {% include 'admin/topselling.html' %}#}
+{#                                <!-- End Top Selling -->#}
                             {% endblock %}
                         </div>
                     </div>
@@ -326,3 +327,68 @@
             class="bi bi-arrow-up-short"></i></a>
 {% endblock %}
 
+{% block extra_scripts %}
+
+
+    <script>
+        $(document).ready(function () {
+            var intervalId; // Variable para almacenar el ID del intervalo
+            console.log($('#filtro-seleccionado-quejas').text());
+
+            function actualizarDatos() {
+                $.ajax({
+                    url: "{% url 'obtener_datos_actualizados' %}",
+                    type: "GET",
+                    dataType: "json",
+                    data:{
+                        'quejas-filtro':$('#filtro-seleccionado-quejas').text(),
+                    },
+                    success: function (response) {
+                        // Actualizar los elementos de la página con los datos recibidos
+                        $('#quejas').text(response.quejas);
+                        $('#denuncia').text(response.denuncia);
+                        $('#demanda').text(response.demanda);
+                        $('#clientes').text(response.clientes);
+                    },
+                    error: function (xhr, status, error) {
+
+                    }
+                });
+            }
+
+            function iniciarActualizacionAutomatica() {
+                intervalId = setInterval(actualizarDatos, 1000);
+            }
+
+            function detenerActualizacionAutomatica() {
+                clearInterval(intervalId);
+            }
+
+            // Iniciar la actualización automática cuando se carga la página
+            iniciarActualizacionAutomatica();
+
+            // Detener la actualización automática cuando se produce el evento beforeunload
+            $(window).on('beforeunload', function () {
+                detenerActualizacionAutomatica();
+            });
+
+
+            $('.quejas-filter .dropdown-item ').on('click', function () {
+                filtro = this.text;
+              $('#filtro-seleccionado-quejas').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+            });
+            $('.denuncia-filter .dropdown-item ').on('click', function () {
+                filtro = this.text;
+              $('#filtro-seleccionado-denuncia').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+            });
+            $('.demanda-filter .dropdown-item ').on('click', function () {
+                filtro = this.text;
+              $('#filtro-seleccionado-demanda').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+            });
+            $('.clientes-filter .dropdown-item ').on('click', function () {
+                filtro = this.text;
+              $('#filtro-seleccionado-clientes').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+            });
+        });
+    </script>
+{% endblock %}

@@ -12,7 +12,7 @@ class QuejaCreateView(LoginRequiredMixin, CreateView):
     model = Queja
     form_class = QuejaForm
     template_name = 'queja/queja_create.html'  # Plantilla para el formulario
-    success_url = reverse_lazy('home')  # URL a la que se redireccionará después de crear la queja
+    success_url = reverse_lazy('quejas_list')  # URL a la que se redireccionará después de crear la queja
 
     def form_valid(self, form):
         form.instance.recurrente = self.request.user
@@ -40,15 +40,15 @@ class QuejaListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
 
-        if user.role == 'client':
+        if user.departamentos.first():
+            # Mostrar las quejas asociadas al departamento del usuario
+            return Queja.objects.filter(departamento_asignado=user.departamentos.first())
+        elif user.role == 'client':
             # Mostrar solo las quejas del usuario actual
             return Queja.objects.filter(recurrente=user)
         elif user.role == 'admin':
             # Mostrar todas las quejas del sistema
             return Queja.objects.all()
-        elif user.departamentos.first():
-            # Mostrar las quejas asociadas al departamento del usuario
-            return Queja.objects.filter(departamento=user.departamentos.first())
         else:
             # En caso de otros roles o usuarios sin departamento, no mostrar ninguna queja
             return Queja.objects.none()

@@ -4,14 +4,18 @@
 
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
+            {% if user.role == 'client' %}
+                <div class="filter">
+                    <div class="icon">
+                        <a class="icon" href="{% url 'quejas_create' %}" data-bs-toggle="tooltip"
+                           data-bs-placement="top" data-bs-original-title="nueva queja"><i
+                                class="bi bi-file-earmark-plus-fill"></i></a>
+                    </div>
 
-            <div class="filter">
-                <div class="icon">
-                     <a class="icon" href="{% url 'quejas_create' %}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="nueva queja"><i class="bi bi-file-earmark-plus-fill"></i></a>
+
                 </div>
 
-
-            </div>
+            {% endif %}
 
             <div class="card-body">
                 <h5 class="card-title">Quejas <span>| Today</span></h5>
@@ -22,8 +26,11 @@
                         <th scope="col">#</th>
                         <th scope="col">Municipio</th>
                         <th scope="col">Asunto</th>
-                        <th scope="col">departamento asignado</th>
+                        <th scope="col">Departamento</th>
                         <th scope="col">Estado</th>
+                        {% if user.departamentos.exists %}
+                            <th scope="col">Tramitar</th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>

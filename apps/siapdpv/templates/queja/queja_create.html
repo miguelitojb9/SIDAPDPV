@@ -1,6 +1,10 @@
 {% extends 'admin/dashboard_admin.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+
+{% block pagetitle_section %}
+    <li class="breadcrumb-item active"><a href="{% url 'quejas_list' %}">Mis Quejas</a></li>
+{% endblock %}
 {% block left_side_columns %}
 
     <div class="col-12">

@@ -1,6 +1,6 @@
 from django.db import models
 from apps.customUser.models import User
-
+from django.utils import timezone
 
 class Queja(models.Model):
     MUNICIPIOS_CHOICES = [
@@ -27,8 +27,13 @@ class Queja(models.Model):
     descripcion = models.TextField(max_length=100,null=True,blank=True)
     procesado = models.BooleanField(default=False)
     enTramite = models.BooleanField(default=False)
-    departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='quejas', null=True, blank=True)
-    organismo_asignado = models.ForeignKey('Organismo', on_delete=models.PROTECT, related_name='solicitudes', null=True, blank=True)
+    departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='quejas',
+                                              null=True, blank=True)
+    organismo_asignado = models.ForeignKey('Organismo', on_delete=models.PROTECT, related_name='solicitudes',
+                                           null=True, blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
 
 
 class Demanda(models.Model):

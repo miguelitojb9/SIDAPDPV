@@ -20,8 +20,13 @@ class BaseADmin(TemplateView):
 
         # Obtener la lista de usuarios
         usuarios = User.objects.all()
-        context['usuarios'] = usuarios
-        context['usuarios_c'] = usuarios.count()
+
+        if self.request.user.departamentos.exists():
+            context['usuarios'] = usuarios.filter(departamentos__in=self.request.user.departamentos.all())
+            context['usuarios_c'] = usuarios.filter(departamentos__in=self.request.user.departamentos.all()).count()
+        else:
+            context['usuarios'] = usuarios
+            context['usuarios_c'] = usuarios.count()
 
         # Obtener la cantidad de usuarios en departamentos
         usuarios_en_departamentos = User.objects.exclude(departamentos__isnull=True).count()

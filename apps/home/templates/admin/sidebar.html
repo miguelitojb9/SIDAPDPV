@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="">
+            <a class="nav-link " href="{% url 'home' %}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -13,105 +13,145 @@
 
 
         <!--  Clientes Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-person"></i></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{% url 'home_admin' %}">
-                        <i class="bi bi-circle"></i><span>Admin</span>
-                    </a>
-                </li>
-                <!-- End Register Page Nav -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="{% url 'user_create' %}">
-                        <i class="bi bi-card-list"></i>
-                        <span>Registrar un </span>
-                    </a>
-                </li>
-                <!-- End Register Page Nav -->
-            </ul>
-        </li>
-        <!-- End Clientes Nav -->
-
-        <li class="nav-heading">Pages</li>
-        <!--  Cake Nav -->
-        <li class="nav-item">
-            <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
-                <i class="bi bi-menu-button-wide"></i><span>Quejas</span><i
-                    class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    {% if user.role == 'client' %}
-                        <a href="{% url 'quejas_list' %}">
-                            <i class="bi bi-circle "></i><span>Mis Quejas</span>
+        {% if user.role == 'admin' %}
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-person"></i></i><span>Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{% url 'home_admin' %}">
+                            <i class="bi bi-circle"></i><span>Admin</span>
                         </a>
-                    {% else %}
-                        <a href="{% url 'quejas_list' %}">
-                            <i class="bi bi-circle "></i><span>Quejas</span>
+                    </li>
+                    <!-- End Register Page Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{% url 'user_create' %}">
+                            <i class="bi bi-card-list"></i>
+                            <span>Registrar un </span>
                         </a>
-                    {% endif %}
+                    </li>
+                    <!-- End Register Page Nav -->
+                </ul>
+            </li>
 
-                </li>
-                <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i><span>Tamano</span>
-                    </a>
-                </li>
 
-                <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i><span>Merengue</span>
-                    </a>
-                </li>
+            <!-- End Clientes Nav -->
 
-                <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i><span>Pisos</span>
-                    </a>
-                </li>
+            <!-- End departamento Nav -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-gem"></i><span>Departamentos</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="">
+                            <i class="bi bi-circle"></i><span>Gestión Departamento</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i><span>Configuración</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End Cake Nav -->
-        <!-- End Pedidos Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-gem"></i><span>Pedidos</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="icons-bootstrap.html">
-                        <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons-remix.html">
-                        <i class="bi bi-circle"></i><span>Remix Icons</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="icons-boxicons.html">
-                        <i class="bi bi-circle"></i><span>Boxicons</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End Pedidos Nav -->
+                </ul>
+            </li>
+            <!-- End departamento Nav -->
+        {% endif %}
+
+
+            <li class="nav-heading">Cliente</li>
+            <!--  Quejas Nav -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
+                    <i class="bi bi-menu-button-wide"></i><span>Quejas</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if user.role == 'client' %}
+                            <a href="{% url 'quejas_list' %}">
+                                <i class="bi bi-circle "></i><span>Mis Quejas</span>
+                            </a>
+                        {% elif user.role == 'admin' %}
+                            <a href="{% url 'quejas_list' %}">
+                                <i class="bi bi-circle "></i><span>Clasificar Quejas</span>
+                            </a>
+
+                        {% elif user.departamentos %}
+                            <a href="{% url 'quejas_list' %}">
+                                <i class="bi bi-circle "></i><span>Tramitar Quejas</span>
+                            </a>
+                        {% endif %}
+
+                    </li>
+
+                </ul>
+            </li>
+            <!-- End Quejas Nav -->
+            <!--  Denuncia Nav -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
+                    <i class="bi bi-menu-button-wide"></i><span>Denuncia</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if user.role == 'client' %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Mis Denuncia</span>
+                            </a>
+                        {% elif user.role == 'admin' %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Clasificar Denuncia</span>
+                            </a>
+
+                        {% elif user.departamentos %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Tramitar Denuncia</span>
+                            </a>
+                        {% endif %}
+
+                    </li>
+
+                </ul>
+            </li>
+            <!-- End Denuncia Nav -->
+            <!--  Demanda Nav -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="Bases">
+                    <i class="bi bi-menu-button-wide"></i><span>Demanda</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        {% if user.role == 'client' %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Mis Demanda</span>
+                            </a>
+                        {% elif user.role == 'admin' %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Clasificar Demanda</span>
+                            </a>
+
+                        {% elif user.departamentos %}
+                            <a href="">
+                                <i class="bi bi-circle "></i><span>Tramitar Demanda</span>
+                            </a>
+                        {% endif %}
+
+                    </li>
+
+                </ul>
+            </li>
+            <!-- End Demanda Nav -->
+
+
+
+
         <!-- End F.A.Q Page Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>F.A.Q</span>
-            </a>
-        </li>
+        {#        <li class="nav-item">#}
+        {#            <a class="nav-link collapsed" href="pages-faq.html">#}
+        {#                <i class="bi bi-question-circle"></i>#}
+        {#                <span>F.A.Q</span>#}
+        {#            </a>#}
+        {#        </li>#}
         <!-- End F.A.Q Page Nav -->
     </ul>
 </aside>

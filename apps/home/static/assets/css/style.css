@@ -829,6 +829,14 @@ h6 {
   color: #2eca6a;
   background: #e0f8e9;
 }
+.dashboard .denuncia-card .card-icon {
+  color: #bf1611;
+  background: #e0f8e9;
+}
+.dashboard .demanda-card .card-icon {
+  color: #bf3400;
+  background: #e0f8e9;
+}
 
 .dashboard .customers-card .card-icon {
   color: #ff771d;
