@@ -1,10 +1,11 @@
-# Sistema de Información  del Departamento de Atención a la Población de la Dirección Provincial de la Vivienda  La Habana 
+# Aplicación Web  del Departamento de Atención a la Población de la Dirección Provincial de la Vivienda  La Habana 
 
 Breve descripción o lema del proyecto.
 
 ## Descripción
 
-El Proyecto Django es una aplicación web diseñada para [describir el propósito o el objetivo general del proyecto].
+La informatización de una aplicación web del Departamento de Atención a la Población de la DPV La Habana,  se presenta como un proyecto evolutivo para el logro de proceso que generen cohesión de la información y trazabilidad de los datos. Actualmente la mejoras que se necesitan en el proceso gestionar las quejas  van dirigidas a la reducción de errores en la conformación y consolidación de la información inducido por los obsoletos métodos de intercambio de información entre unidades sustentado en soporte papel, correo ordinario, provocando duplicidad, perdida y poca trazabilidad de los datos gestionados. Esto genera una demora en el tiempo de respuesta a las quejas que entra al departamento de Atención a la Población de la DPV La Habana  garantizando la infectividad en situación que inciden sobre los individuos y una baja calidad asistencial resultado en el recelo de la población  a regresar a la institución. 
+
 
 ## Instalación
 
