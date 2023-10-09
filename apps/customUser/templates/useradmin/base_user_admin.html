@@ -39,7 +39,7 @@
                                         <th scope="row"><a href="#">{{ user.id }}</a></th>
                                         <th >{{ user.first_name }}</th>
                                         <th >{{ user.email }}</th>
-                                        <th >{{ user.departamentos.first }}</th>
+                                        <th >{{ user.departamento }}</th>
                                         <th >{{ user.role }}</th>
 
 
@@ -104,4 +104,16 @@
 
 {% endblock %}
 
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function () {
+            var navItem = $('.nav-item');
+            var expanded = navItem.attr('aria-expanded');
+            navItem.attr('aria-expanded', expanded === 'true' ? 'false' : 'true');
+            $('#forms-nav').addClass('show');
+            $('#forms-nav a i').removeClass('bi-circle');
+            $('#forms-nav a i').addClass('bi-card-list');
 
+        });
+    </script>
+{% endblock %}

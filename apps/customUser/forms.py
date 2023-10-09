@@ -39,17 +39,18 @@ class LoginForm(forms.Form):
 
 
 class UserForm(forms.ModelForm):
-    departamento = forms.ModelChoiceField(
-        label="Departamento",
-        queryset=Departamento.objects.all(),
-        widget=forms.Select(attrs={"class": "form-select"})
-    )
+    # departamento = forms.ModelChoiceField(
+    #     label="Departamento",
+    #     queryset=Departamento.objects.all(),
+    #     widget=forms.Select(attrs={"class": "form-select"})
+    # )
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'role', 'password']
+        fields = ['departamento', 'first_name', 'last_name', 'email', 'role', 'password']
         widgets = {
+            'departamento': forms.Select(attrs={"class": "form-select"}),
             'first_name': forms.TextInput(attrs={"class": "form-control"}),
             'last_name': forms.TextInput(attrs={"class": "form-control"}),
             'email': forms.EmailInput(attrs={"class": "form-control"}),

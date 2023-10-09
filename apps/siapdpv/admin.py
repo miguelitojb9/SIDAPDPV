@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Queja, Demanda, Solicitud, Nota, Documento, Organismo, Departamento, Tramite
+from .models import Queja, Demanda, Solicitud, Nota, Documento, Tramite
+from ..customUser.models import Organismo, Departamento
 
 
 class QuejaAdmin(admin.ModelAdmin):

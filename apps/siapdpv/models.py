@@ -1,6 +1,7 @@
 from django.db import models
-from apps.customUser.models import User
+from apps.customUser.models import User, Departamento, Organismo
 from django.utils import timezone
+
 
 class Queja(models.Model):
     MUNICIPIOS_CHOICES = [
@@ -27,13 +28,15 @@ class Queja(models.Model):
     descripcion = models.TextField(max_length=100,null=True,blank=True)
     procesado = models.BooleanField(default=False)
     enTramite = models.BooleanField(default=False)
-    departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='quejas',
+    departamento_asignado = models.ForeignKey(Departamento, on_delete=models.PROTECT, related_name='quejas',
                                               null=True, blank=True)
-    organismo_asignado = models.ForeignKey('Organismo', on_delete=models.PROTECT, related_name='solicitudes',
+    organismo_asignado = models.ForeignKey(Organismo, on_delete=models.PROTECT, related_name='solicitudes',
                                            null=True, blank=True)
     fecha_creacion = models.DateTimeField(default=timezone.now)
     fecha_modificacion = models.DateTimeField(auto_now=True)
 
+    def get_municipio(self):
+        return self.get_municipio_display()
 
 
 class Demanda(models.Model):
@@ -42,7 +45,7 @@ class Demanda(models.Model):
     municipio = models.CharField(max_length=100)
     procesado = models.BooleanField(default=False)
     enTramite = models.BooleanField(default=False)
-    departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='demandas', null=True, blank=True)
+    departamento_asignado = models.ForeignKey(Departamento, on_delete=models.PROTECT, related_name='demandas', null=True, blank=True)
 
 
 class Solicitud(models.Model):
@@ -51,7 +54,7 @@ class Solicitud(models.Model):
     municipio = models.CharField(max_length=100)
     procesado = models.BooleanField(default=False)
     enTramite = models.BooleanField(default=False)
-    departamento_asignado = models.ForeignKey('Departamento', on_delete=models.PROTECT, related_name='solicitudes', null=True, blank=True)
+    departamento_asignado = models.ForeignKey(Departamento, on_delete=models.PROTECT, related_name='solicitudes', null=True, blank=True)
 
 
 class Nota(models.Model):
@@ -68,12 +71,7 @@ class Documento(models.Model):
     archivo = models.FileField(upload_to='documentos/')
 
 
-class Departamento(models.Model):
-    nombre = models.CharField(max_length=200)
-    usuarios = models.ManyToManyField(User, related_name='departamentos', null=True, blank=True)
 
-    def __str__(self):
-        return self.nombre
 
 
 class Tramite(models.Model):
@@ -87,7 +85,3 @@ class Tramite(models.Model):
     aprobado = models.BooleanField(default=False)
     usuario_responsable = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
 
-
-class Organismo(models.Model):
-    nombre = models.CharField(max_length=200)
-    usuarios = models.ManyToManyField(User, related_name='organismos', blank=True, null=True)

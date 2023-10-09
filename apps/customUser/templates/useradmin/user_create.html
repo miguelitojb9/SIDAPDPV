@@ -105,3 +105,16 @@
     </div>
 
 {% endblock %}
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function () {
+            var navItem = $('.nav-item');
+            var expanded = navItem.attr('aria-expanded');
+            navItem.attr('aria-expanded', expanded === 'true' ? 'false' : 'true');
+            $('#forms-nav').addClass('show');
+            $('#forms-nav a i').removeClass('bi-circle');
+            $('#forms-nav a i').addClass('bi-card-list');
+
+        });
+    </script>
+{% endblock %}

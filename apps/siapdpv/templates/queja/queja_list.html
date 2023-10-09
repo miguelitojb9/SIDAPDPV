@@ -24,11 +24,18 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
                         <th scope="col">Municipio</th>
+                        {% if user.role == 'admin' %}
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellildo</th>
+                        {% endif %}
                         <th scope="col">Asunto</th>
                         <th scope="col">Departamento</th>
-                        <th scope="col">Estado</th>
-                        {% if user.departamentos.exists %}
+                        {% if user.role == 'client' %}
+                            <th scope="col">Estado</th>
+                        {% endif %}
+                        {% if user.departamento %}
                             <th scope="col">Tramitar</th>
                         {% endif %}
                     </tr>
@@ -37,18 +44,32 @@
                     {% if quejas %}
                         {% for queja in object_list %}
                             <tr>
-                                <th scope="row"><a href="#">{{ queja.id }}</a></th>
-                                <td>{{ queja.municipio| default:'-' }}</td>
+                                <th>{{ queja.id }}</th>
+                                <th>{{ queja.fecha_creacion | date:"d/m/Y" }}</th>
+                                <td>{{ queja.get_municipio }}</td>
+                                {% if user.role == 'admin' %}
+                                    <th scope="col">{{ queja.recurrente.first_name }}</th>
+                                    <th scope="col">{{ queja.recurrente.last_name }}</th>
+                                {% endif %}
                                 <td>{{ queja.asunto }}</td>
-
-                                <td>{{ queja.departamento_asignado.nombre | default:'su queja aun esta en espera' }}</td>
-                                {% if queja.procesado %}
-                                    <td><span class="badge bg-success">Approved</span></td>
-                                {% elif queja.enTramite %}
-                                    <td><span class="badge bg-danger">Rejected</span></td>
-
+                                {% if user.role == 'admin' and user.departamento is None %}
+                                    <td>
+                                        <a href="#" data-queja-id="{{ queja.id }}" class="assign-department-btn"
+                                           data-bs-toggle="modal" data-bs-target="#assignDepartmentModal">
+                                            <span class="badge bg-success">Asignar Dpto</span>
+                                        </a>
+                                    </td>
                                 {% else %}
-                                    <td><span class="badge bg-warning">Pending</span></td>
+
+                                    <td>{{ queja.departamento_asignado.nombre | default:'su queja aun esta en espera' }}</td>
+                                    {% if queja.procesado %}
+                                        <td><span class="badge bg-success">Approved</span></td>
+                                    {% elif queja.enTramite %}
+                                        <td><span class="badge bg-danger">Rejected</span></td>
+
+                                    {% else %}
+                                        <td><span class="badge bg-warning">Pending</span></td>
+                                    {% endif %}
                                 {% endif %}
 
 
@@ -72,5 +93,128 @@
         </div>
     </div>
 
+
+    {% include 'queja/modal_content.html' %}
 {% endblock %}
 
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function () {
+            cargar_depto();
+
+            $('#assignDepartmentModal').modal('hide');
+            var navItem = $('.nav-item');
+            var expanded = navItem.attr('aria-expanded');
+            navItem.attr('aria-expanded', expanded === 'true' ? 'false' : 'true');
+            $('#quejas-nav').addClass('show');
+            $('#quejas-nav a i').removeClass('bi-circle');
+            $('#quejas-nav a i').addClass('bi-card-list');
+
+            $('.assign-department-btn').click(function (e) {
+                e.preventDefault();
+                var quejaId = $(this).data('queja-id');
+                // Reemplaza "load_queja_info" con la URL de tu vista
+
+                $.ajax({
+                    url: '/siapdpv/load_queja_info/',
+                    type: 'GET',
+                    data: {queja_id: quejaId},
+                    success: function (data) {
+                        // Actualiza el contenido del modal con la información de la queja
+                        var queja = data.data;
+                        console.log(queja.documento)
+                        $('#queja_id').val(queja.id);
+                        $('#queja_fecha').text(queja.fecha);
+                        $('#queja_descripcion').text(queja.descripcion);
+                        $('#queja_asunto').text(queja.titulo);
+                        $('#documento_iframe').attr('src', queja.documento);
+                        $('#assignDepartmentModal').modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            $('#btn-save').click(function () {
+                var quejaId = $('#queja_id').val();
+
+                var depto_id = $('#dptos').val();
+                console.log(quejaId)
+                console.log(depto_id)
+
+                $.ajax({
+                    url: '/siapdpv/asignar_departamento/',
+                    type: 'POST',
+                    data: {
+                        'queja_id': quejaId,
+                        'depto_id': depto_id,
+                    },
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    success: function (data) {
+                        // Actualiza el contenido del modal con la información de la queja
+
+                        console.log(data)
+                        if (data.success) {
+                            // Muestra una notificación de éxito con SweetAlert
+                            mostrarNotificacion('success', 'top-end', 'El formulario se envió correctamente.');
+                            $('#assignDepartmentModal').modal('hide');
+                            setTimeout(function () {
+                                location.reload(true); // Recargar la página después de 3 segundos
+                            }, 3000);
+
+
+                            previewContainer.empty();
+                        } else {
+                            // Muestra una notificación de error si el formulario no se envió correctamente
+                            mostrarNotificacion('error', 'top-end', 'Hubo un problema al enviar el formulario.');
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
+
+        function cargar_depto() {
+            $.ajax({
+                url: '/cargar_departamentos/',
+                type: 'GET',
+                data: {},
+                success: function (data) {
+                    $('#dptos').empty();
+                    $('#dptos').append($('<option>').text("-- Selecciona una"));
+                    $.each(data, function (index, obj) {
+                        $('#dptos').append($('<option>').text(obj.name).attr('value', obj.id));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+
+        }
+
+        // Función para obtener el valor de una cookie por su nombre
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock %}

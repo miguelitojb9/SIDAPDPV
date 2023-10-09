@@ -1,0 +1,306 @@
+{% extends 'admin/dashboard_admin.html' %}
+{% load static %}
+{% block content_dashboar %}
+
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-4">
+
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                        <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
+                        <h2>{{ user.first_name }} {{ user.last_name }} </h2>
+
+                        {% if user.departamento is not None %}
+                            <h3>Dpto: {{ user.departamento }}</h3>
+                        {% else %}
+                            <h3>{{ user.role| upper }}</h3>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-8">
+
+                <div class="card">
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">
+                                    Overview
+                                </button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit
+                                    Profile
+                                </button>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
+                                    Change Password
+                                </button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                <h5 class="card-title">Detalles del Perfil</h5>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Correo</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.email }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Nombre</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.first_name }} {{ user.last_name }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">CI</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.ci }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Sexo</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.gender }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Municipio</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.get_municipality_display }}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Dirección</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.address }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label">Rol</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.role }}</div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                                <!-- Profile Edit Form -->
+                                <form id="profile-form">
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile
+                                            Image</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile">
+                                            <div class="pt-2">
+                                                <a href="#" class="btn btn-primary btn-sm"
+                                                   title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                                                <a href="#" class="btn btn-danger btn-sm"
+                                                   title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="first_name" class="col-md-4 col-lg-3 col-form-label">Nombre</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="first_name" type="text" class="form-control" id="first_name"
+                                                   value="Kevin Anderson">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Apellido</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="last_name" type="text" class="form-control" id="last_name"
+                                                   value="Kevin Anderson">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                    </div>
+                                </form><!-- End Profile Edit Form -->
+
+                            </div>
+
+
+                            <div class="tab-pane fade pt-3" id="profile-change-password">
+                                <!-- Change Password Form -->
+                                <form id="password-form" class="row g-3 needs-validation" novalidate method="POST">
+                                    {% csrf_token %}
+
+                                    <div class="row mb-3">
+                                        <label for="old_password" class="col-md-4 col-lg-3 col-form-label">Current
+                                            Password</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="old_password" type="password" class="form-control"
+                                                   id="old_password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="new_password1" class="col-md-4 col-lg-3 col-form-label">New
+                                            Password</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="new_password1" type="password" class="form-control"
+                                                   id="new_password1" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="new_password2" class="col-md-4 col-lg-3 col-form-label">Re-enter New
+                                            Password</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="new_password2" type="password" class="form-control"
+                                                   id="new_password2" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                    </div>
+                                </form><!-- End Change Password Form -->
+
+                            </div>
+
+                        </div><!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+    <script>
+        $(document).ready(function () {
+
+            $('#profile-form').submit(function (event) {
+                event.preventDefault(); // Prevenir el envío del formulario por defecto
+                // Obtener los datos del formulario
+                var formData = $(this).serialize();
+                {#var formData = new FormData(form[0]);  // Crear un objeto FormData con los datos del formulario#}
+
+
+                // Obtener el token CSRF del cookie
+                var csrftoken = getCookie('csrftoken');
+                // Incluir el token CSRF en los encabezados de la solicitud AJAX
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    }
+                });
+                // Enviar la petición AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/users-profile/edit/', // URL de la vista de actualización
+                    data: formData,
+                    success: function (response) {
+                        setTimeout(function () {
+                            location.reload(true); // Recargar la página después de 3 segundos
+                        }, 3000);
+                        mostrarNotificacion("success", "top-end", "Perfil actualizado"); // Mostrar la notificación después de recargar la página
+
+                    },
+                    error: function (xhr, errmsg, err) {
+                        // Manejar errores de la petición AJAX
+                        // Por ejemplo, mostrar un mensaje de error o realizar alguna acción de retroceso
+                        mostrarNotificacion('success', 'top-end', 'Error al actualizar el perfil');
+
+
+                    },
+
+                });
+            });
+
+
+            $('#password-form').submit(function (event) {
+                event.preventDefault(); // Prevenir el envío del formulario por defecto
+
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '/users-profile/change-password/',
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    success: function (response) {
+
+                        if (response.success) {
+                            // Mostrar notificación de éxito
+                            setTimeout(function () {
+                                location.reload(true); // Recargar la página después de 3 segundos
+                            }, 3000);
+                            mostrarNotificacion("success", "top-end", "Contraseña cambiada exitosamente"); // Mostrar la notificación después de recargar la página
+                            // Limpiar los campos del formulario
+                            $("#old-password").val("");
+                            $("#new-password1").val("");
+                            $("#new-password2").val("");
+                            // Limpiar los errores anteriores
+                            $(".form-error").text("").hide();
+
+                        } else {
+                            // Mostrar los errores del formulario
+                            var errors = response.errors;
+                            // Limpiar los errores anteriores
+                            $(".form-error").text("").hide();
+                            var msg = ''
+                            // Mostrar los errores asociados a cada campo
+                            Object.keys(errors).forEach(function (field) {
+                                var errorMessages = errors[field];
+                                msg += errorMessages[0].message
+                                var errorFieldId = "#error-" + field;
+                                $(errorFieldId).text(errorMessages[0].message).show();
+                            });
+                            mostrarNotificacion("error", "top-end", msg); // Mostrar la notificación después de recargar la página
+
+                        }
+
+                    },
+                    error: function (xhr, errors, err) {
+                        // Manejar errores de la petición AJAX
+                        // Por ejemplo, mostrar un mensaje de error o realizar alguna acción de retroceso
+
+                        mostrarNotificacion("success", "top-end", errors); // Mostrar la notificación después de recargar la página
+
+                    }
+
+                });
+            });
+
+        });
+
+        // Función para obtener el valor de una cookie por su nombre
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock %}
