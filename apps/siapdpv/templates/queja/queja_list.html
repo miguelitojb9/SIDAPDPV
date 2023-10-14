@@ -76,12 +76,15 @@
                                         </td>
                                     {% else %}
                                         {% if queja.procesado %}
-                                            <td><span class="badge bg-success">Approved</span></td>
+                                            <td><a href="#" data-tramite-id="" class="eyes-btn"
+                                                   data-bs-toggle="modal" data-bs-target="#detailquejaModal">
+                                                <span class="badge bg-success"><i class="bi bi-eye"></i> Respondido</span>
+                                            </a></td>
                                         {% elif queja.enTramite %}
-                                            <td><span class="badge bg-danger">Rejected</span></td>
+                                            <td><span class="badge bg-warning"><i class="bi bi-patch-exclamation"></i> En Tramite</span></td>
 
                                         {% else %}
-                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td><span class="badge bg-secondary "><i class="bi bi-alarm"></i> Pendiente</span></td>
                                         {% endif %}
 
                                     {% endif %}
@@ -94,7 +97,9 @@
 
                     {% else %}
                         <tr>
-                            <th scope="row"><a href="#">nada para mostrar</a></th>
+                            <td class="datatable-empty" colspan="10">
+                                No hay datos para mostrar
+                            </td>
 
                         </tr>
                     {% endif %}
@@ -110,6 +115,7 @@
 
 
     {% include 'queja/modal_content.html' %}
+    {% include 'queja/detail_queja.html' %}
 
 {% endblock %}
 

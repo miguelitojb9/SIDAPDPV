@@ -134,13 +134,14 @@ class CrearTramiteView(LoginRequiredMixin, View):
         tramite = Tramite.objects.create(
             departamento_asignado=queja.departamento_asignado,
             aprobado=True,
-            tipo_tramite='queja',
+            tipo_tramite='I',
             usuario_responsable=request.user
         )
-        queja.procesado = True
         queja.enTramite = True
         queja.tramite = tramite
         queja.save()
+        tramite.codificacion = f"{tramite.tipo_tramite}-{queja.asunto}"
+        tramite.save()
         return redirect(reverse_lazy('lista_tramites'))
         # Reemplaza con el nombre de tu URL para el listado de trámites
 
@@ -171,6 +172,9 @@ class CrearRespuestaTramiteView(LoginRequiredMixin, View):
                 tramite.adjunto = adjunto
 
             # Guardar los cambios en el trámite
+            queja =  Queja.objects.get(id=tramite.queja_set.first().id)
+            queja.procesado = True
+            queja.save()
             tramite.save()
 
             # Devolver una respuesta JSON

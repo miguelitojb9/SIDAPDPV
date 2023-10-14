@@ -5,18 +5,18 @@ from django.utils import timezone
 
 
 class Tramite(models.Model):
-    TIPOS_TRAMITE = (
-        ('queja', 'Queja'),
-        ('demanda', 'Demanda'),
-        ('solicitud', 'Solicitud'),
-    )
     fecha_creacion = models.DateTimeField(default=timezone.now)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     departamento_asignado = models.ForeignKey(Departamento, on_delete=models.PROTECT)
-    tipo_tramite = models.CharField(max_length=10, choices=TIPOS_TRAMITE)
+    tipo_tramite = models.CharField(max_length=10, choices={
+        ('I', 'Queja'),
+        ('II', 'Demanda'),
+        ('IV', 'Solicitud'),
+    })
     aprobado = models.BooleanField(default=False)
     usuario_responsable = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     fecha_respuesta = models.DateField(blank=True, null=True)
+    codificacion = models.CharField(max_length=10, blank=True, null=True)
 
     # Campos para la respuesta al trámite
     respuesta = models.TextField(blank=True)
@@ -38,18 +38,10 @@ class Tramite(models.Model):
 
     nivel_solucion = models.CharField(max_length=2, choices=NIVEL_SOLUCION_CHOICES, blank=True, null=True)
 
-    def clean(self):
-        if self.tipo_tramite == 'queja':
-            existing_demanda_tramites = Tramite.objects.filter(
-                tipo_tramite='queja',
-                departamento_asignado=self.departamento_asignado
-            )
-            if existing_demanda_tramites.exists():
-                raise ValidationError('Ya existe un trámite de demanda para este departamento.')
-
     def save(self, *args, **kwargs):
         if self.aprobado and not self.fecha_respuesta:
             self.fecha_respuesta = timezone.now().date() + timezone.timedelta(days=60)
+
         super().save(*args, **kwargs)
 
 

@@ -32,7 +32,7 @@
                             <th scope="col">Opciones</th>
                         {% else %}
 
-                            <th scope="col">Asunto</th>
+                            <th scope="col">Codificación</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Procesar</th>
 
@@ -49,7 +49,7 @@
                                 <th>{{ tramite.fecha_creacion | date:"d/m/Y" }}</th>
 
                                 {% if not tramite.tiene_respuesta %}
-                                    <th>{{ tramite.queja_set.first.asunto }}</th>
+                                    <th>{{ tramite.codificacion }}</th>
                                     <th>{{ tramite.queja_set.first.descripcion }}</th>
                                     <td>
                                         <a href="#" data-tramite-id="{{ tramite.id }}" class="tramitar-btn"
