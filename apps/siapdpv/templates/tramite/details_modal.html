@@ -2,7 +2,7 @@
 <!-- Modal -->
 <div class="modal fade" id="detailTramiteModal" tabindex="-1" aria-labelledby="detailTramiteModal"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Detalles del Tramite </h5>
@@ -11,30 +11,34 @@
             <div class="modal-body">
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                     <h5 class="card-title">Tramite</h5>
+                    <input id="det_tramite_id" style="display: none">
 
+                    <div class="row">
+                        <div class="col-2 d-flex align-items-baseline">
+                            <div class="col-sm-3"><span>Fecha:</span></div>
+                            <div class="col-sm-8">
+                                <p id="det_tramite_fecha"></p>
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex align-items-baseline">
+                            <div class="col-sm-3"><span>Expira:</span></div>
+                            <div class="col-sm-4">
+                                 <p id="det_expira_en"></p>
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex align-items-baseline">
+                            <div class="col-sm-3"><span>Responsable:</span></div>
+                            <div class="col-sm-10">
+                               <p id="det_tramite_responsable"></p>
+                            </div>
+                        </div>
+                        <div class="col-2 d-flex align-items-baseline">
+                            <div class="col-sm-3"><span>Departamento:</span></div>
+                            <div class="col-sm-10">
+                                 <p id="det_tramite_departamento_asignado"></p>
+                            </div>
+                        </div>
 
-                    <div class="row">
-                        <input id="det_tramite_id" style="display: none">
-                        <div class="col-1  label "><span>Fecha:</span></div>
-                        <div class="col-2 "><p id="det_tramite_fecha"></p></div>
-                        <div class="col-2  label "><span>Expira en:</span></div>
-                        <div class="col-2 "><p id="det_expira_en"></p></div>
-                        <div class="col-2  label "><span>Responsable:</span></div>
-                        <div class="col-3 "><p id="det_tramite_responsable"></p></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1 label "><span>Depto</span></div>
-                        <div class="col-3 "><p id="det_tramite_departamento_asignado"></p></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1 label "><span>Respuesta</span></div>
-                        <div class="col-3 "><p id="det_tramite_respuesta"></p></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1 label "><span>Respuesta</span></div>
-                        <div class="col-3 "><p id="det_tramite_respuesta"></p></div>
-                        <div class="col-1 label "><span>Respuesta</span></div>
-                        <div class="col-3 "><p id="det_tramite_respuesta"></p></div>
                     </div>
 
 

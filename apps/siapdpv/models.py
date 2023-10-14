@@ -74,7 +74,11 @@ class Queja(models.Model):
     ]
     noRadicacion = models.CharField(max_length=100, null=True, blank=True)
     recurrente = models.ForeignKey(User, on_delete=models.PROTECT)
-    asunto = models.CharField(max_length=200)
+    asunto = models.CharField(max_length=200, choices={
+        ('101', 'Inmuebles (Casa, apartamento, ciudadelas, etc.)'),
+        ('102', 'Ampliación'),
+        ('103', 'Permuta entre particulares'),
+    })
     municipio = models.CharField(max_length=100, choices=MUNICIPIOS_CHOICES)
     descripcion = models.TextField(max_length=100, null=True, blank=True)
     procesado = models.BooleanField(default=False)

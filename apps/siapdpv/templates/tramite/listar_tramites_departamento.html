@@ -151,9 +151,9 @@
             var navItem = $('.nav-item');
             var expanded = navItem.attr('aria-expanded');
             navItem.attr('aria-expanded', expanded === 'true' ? 'false' : 'true');
-            $('#quejas-nav').addClass('show');
-            $('#quejas-nav a i').removeClass('bi-circle');
-            $('#quejas-nav a i').addClass('bi-card-list');
+            $('#tramite-nav').addClass('show');
+            $('#tramite-nav a i').removeClass('bi-circle');
+            $('#tramite-nav a i').addClass('bi-card-list');
 
             $('.tramitar-btn').click(function (e) {
                 e.preventDefault();
@@ -215,8 +215,8 @@
                         $('#det_tramite_responsable').text(tramite.responsable);
                         $('#det_tramite_departamento_asignado').text(tramite.departamento);
                         $('#det_tramite_respuesta').text(tramite.respuesta);
-                        $('#det_tramite_departamento_asignado').text(tramite.departamento);
-                        $('#det_tramite_departamento_asignado').text(tramite.departamento);
+                        $('#det_tramite_conclusion_queja').text(tramite.conclusion_queja);
+                        $('#det_tramite_nivel_solucion').text(tramite.nivel_solucion);
 
                         {# queja detalles #}
                         $('#queja_fecha').text(queja.fecha);
