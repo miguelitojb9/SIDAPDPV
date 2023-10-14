@@ -65,7 +65,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('habana_del_este', 'Habana del Este'),
         ('habana_vieja', 'Habana Vieja'),
         ('la_lisa', 'La Lisa'),
-        ('mantilla', 'Mantilla'),
         ('marianao', 'Marianao'),
         ('plaza', 'Plaza de la Revolución'),
         ('regla', 'Regla'),
