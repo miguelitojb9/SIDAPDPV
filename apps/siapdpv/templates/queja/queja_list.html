@@ -18,12 +18,15 @@
             {% endif %}
 
             <div class="card-body">
-                <h5 class="card-title">Quejas <span>| Today</span></h5>
+                <h5 class="card-title">Quejas <span>| {{ user.departamento }}</span></h5>
 
                 <table class="table table-borderless datatable">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        {% if quejas and user.departamento %}
+                            <th scope="col">No. Rad</th>
+                        {% endif %}
                         <th scope="col">Fecha</th>
                         <th scope="col">Municipio</th>
                         {% if user.role == 'admin' %}
@@ -34,8 +37,7 @@
                         <th scope="col">Departamento</th>
                         {% if user.role == 'client' %}
                             <th scope="col">Estado</th>
-                        {% endif %}
-                        {% if user.departamento %}
+                        {% elif user.departamento %}
                             <th scope="col">Tramitar</th>
                         {% endif %}
                     </tr>
@@ -45,6 +47,9 @@
                         {% for queja in object_list %}
                             <tr>
                                 <th>{{ queja.id }}</th>
+                                {% if quejas and user.departamento %}
+                                    <th scope="col">{{ queja.noRadicacion }}</th>
+                                {% endif %}
                                 <th>{{ queja.fecha_creacion | date:"d/m/Y" }}</th>
                                 <td>{{ queja.get_municipio }}</td>
                                 {% if user.role == 'admin' %}
@@ -62,13 +67,23 @@
                                 {% else %}
 
                                     <td>{{ queja.departamento_asignado.nombre | default:'su queja aun esta en espera' }}</td>
-                                    {% if queja.procesado %}
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    {% elif queja.enTramite %}
-                                        <td><span class="badge bg-danger">Rejected</span></td>
-
+                                    {% if user.departamento and user.role == 'admin' %}
+                                        <td>
+                                            <a href="{% url 'crear_tramite' queja_id=queja.id %}"
+                                               class="tramitar-queja-btn">
+                                                <span class="badge bg-warning">Tramitar Queja</span>
+                                            </a>
+                                        </td>
                                     {% else %}
-                                        <td><span class="badge bg-warning">Pending</span></td>
+                                        {% if queja.procesado %}
+                                            <td><span class="badge bg-success">Approved</span></td>
+                                        {% elif queja.enTramite %}
+                                            <td><span class="badge bg-danger">Rejected</span></td>
+
+                                        {% else %}
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                        {% endif %}
+
                                     {% endif %}
                                 {% endif %}
 
@@ -95,12 +110,14 @@
 
 
     {% include 'queja/modal_content.html' %}
+
 {% endblock %}
 
 {% block extra_scripts %}
     <script>
         $(document).ready(function () {
             cargar_depto();
+
 
             $('#assignDepartmentModal').modal('hide');
             var navItem = $('.nav-item');

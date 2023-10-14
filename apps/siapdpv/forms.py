@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column
-from .models import Queja
+from .models import Queja, Tramite
 
 
 class QuejaForm(forms.ModelForm):
@@ -20,3 +20,8 @@ class QuejaForm(forms.ModelForm):
 
 
         )
+
+class RespuestaForm(forms.ModelForm):
+    class Meta:
+        model = Tramite
+        fields = ['respuesta', 'adjunto', 'conclusion_queja', 'nivel_solucion']

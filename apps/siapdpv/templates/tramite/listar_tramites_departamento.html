@@ -1,0 +1,331 @@
+{% extends 'admin/dashboard_admin.html' %}
+
+{% block content_dashboar %}
+
+    <div class="col-12">
+        <div class="card recent-sales overflow-auto">
+            {% if user.role == 'client' %}
+                <div class="filter">
+
+
+                </div>
+
+
+
+
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">Tramites <span>|{{ user.departamento }}</span></h5>
+
+                <table class="table table-borderless datatable">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Fecha</th>
+
+                        {% if not user.departamento and user.role == 'admin' %}
+                            <th scope="col">Departamento</th>
+                            <th scope="col">Responsable</th>
+                            <th scope="col">Conclusion queja</th>
+                            <th scope="col">Nivel solucion</th>
+                            <th scope="col">Opciones</th>
+                        {% else %}
+
+                            <th scope="col">Asunto</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Procesar</th>
+
+                        {% endif %}
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if tramites %}
+                        {% for tramite in object_list %}
+                            <tr>
+                                <th>{{ tramite.id }}</th>
+                                <th>{{ tramite.fecha_creacion | date:"d/m/Y" }}</th>
+
+                                {% if not tramite.tiene_respuesta %}
+                                    <th>{{ tramite.queja_set.first.asunto }}</th>
+                                    <th>{{ tramite.queja_set.first.descripcion }}</th>
+                                    <td>
+                                        <a href="#" data-tramite-id="{{ tramite.id }}" class="tramitar-btn"
+                                           data-bs-toggle="modal" data-bs-target="#responderTramiteModal">
+                                            <span class="badge bg-success">Procesar Trámite</span>
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    <th>{{ tramite.usuario_responsable.departamento.nombre }}</th>
+                                    <th>{{ tramite.usuario_responsable.first_name }} {{ tramite.usuario_responsable.last_name }}</th>
+                                    <th>{{ tramite.conclusion_queja }}</th>
+                                    <th>{{ tramite.nivel_solucion }}</th>
+                                    <th>
+                                        <div class="icon">
+                                            <a href="#" data-tramite-id="{{ tramite.id }}" class="eyes-btn"
+                                               data-bs-toggle="modal" data-bs-target="#detailTramiteModal">
+                                                <span class="badge bg-success"><i class="bi bi-eye"></i></span>
+                                            </a>
+
+                                            |
+                                            <a href=""><i class="bi bi-printer"></i></a>
+                                        </div>
+
+                                    </th>
+                                {% endif %}
+
+                            </tr>
+                        {% endfor %}
+
+
+                    {% else %}
+                        <tr>
+                            <th scope="row"><a href="#">nada para mostrar</a></th>
+
+                        </tr>
+                    {% endif %}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    {% include 'tramite/modal_content.html' %}
+    {% include 'tramite/details_modal.html' %}
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        $(document).ready(function () {
+            var modal = $('#responderTramiteModal');
+            $('#formFile').change(function () {
+
+                var previewContainer = $('#preview-container');
+                previewContainer.empty();
+
+                var files = $(this)[0].files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var fileType = file.type;
+                        var validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                        var validDocumentTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+
+                        if (validImageTypes.includes(fileType)) {
+                            previewContainer.append('<img src="' + e.target.result + '" class="img-thumbnail" alt="' + file.name + '">');
+                        } else if (validDocumentTypes.includes(fileType)) {
+                            if (fileType === 'application/pdf') {
+                                previewContainer.append('<p>Nombre del archivo: ' + file.name + '</p>');
+                                previewContainer.append('<embed src="' + e.target.result + '#toolbar=0" type="' + fileType + '" width="100%" height="400px" />');
+                            } else {
+                                previewContainer.append('<p>Nombre del archivo: ' + file.name + '</p>');
+                                previewContainer.append('<p>Tipo de archivo: ' + file.type + '</p>');
+                            }
+                        } else {
+                            previewContainer.append('<p>Archivo no válido: ' + file.name + '</p>');
+                        }
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+
+            // Agrega un evento de escucha para el evento 'hidden.bs.modal' que se dispara cuando se cierra el modal
+            modal.on('hidden.bs.modal', function () {
+                // Recarga la página
+                location.reload();
+            });
+
+
+            var navItem = $('.nav-item');
+            var expanded = navItem.attr('aria-expanded');
+            navItem.attr('aria-expanded', expanded === 'true' ? 'false' : 'true');
+            $('#quejas-nav').addClass('show');
+            $('#quejas-nav a i').removeClass('bi-circle');
+            $('#quejas-nav a i').addClass('bi-card-list');
+
+            $('.tramitar-btn').click(function (e) {
+                e.preventDefault();
+                var tramiteId = $(this).data('tramite-id');
+
+                // Reemplaza "load_queja_info" con la URL de tu vista
+
+                $.ajax({
+                    url: '/siapdpv/load_tramite_info/',
+                    type: 'GET',
+                    data: {tramiteId: tramiteId},
+                    success: function (data) {
+                        // Actualiza el contenido del modal con la información de la queja
+                        $('#fecha_respuesta').empty();
+
+                        var tramite = data.data;
+                        var queja = data.data.queja_dict
+
+                        $('#tramite_id').val(tramite.id);
+                        $('#tramite_fecha').text(tramite.fecha);
+                        $('#dias_respuesta').text(tramite.dias_respuesta + ' días');
+                        $('#fecha_respuesta').val(tramite.fecha_respuesta);
+                        {# queja detalles #}
+                        $('#queja_fecha').text(queja.fecha);
+                        $('#queja_asunto').text(queja.titulo);
+                        $('#queja_municipio').text(queja.municipio);
+                        $('#queja_cliente').text(queja.cliente);
+                        $('#queja_descripcion').text(queja.descripcion);
+                        startCountdown();
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            $('.eyes-btn').click(function (e) {
+                e.preventDefault();
+                var tramiteId = $(this).data('tramite-id');
+
+
+                // Reemplaza "load_queja_info" con la URL de tu vista
+
+                $.ajax({
+                    url: '/siapdpv/load_tramite_info/',
+                    type: 'GET',
+                    data: {tramiteId: tramiteId},
+                    success: function (data) {
+                        // Actualiza el contenido del modal con la información de la queja
+
+                        var tramite = data.data;
+                        console.log(tramite);
+                        var queja = data.data.queja_dict
+
+                        $('#det_tramite_id').val(tramite.id);
+                        $('#det_tramite_fecha').text(tramite.fecha);
+                        $('#det_expira_en').text(tramite.dias_respuesta + ' días');
+                        $('#det_tramite_responsable').text(tramite.responsable);
+                        $('#det_tramite_departamento_asignado').text(tramite.departamento);
+                        $('#det_tramite_respuesta').text(tramite.respuesta);
+                        $('#det_tramite_departamento_asignado').text(tramite.departamento);
+                        $('#det_tramite_departamento_asignado').text(tramite.departamento);
+
+                        {# queja detalles #}
+                        $('#queja_fecha').text(queja.fecha);
+                        $('#queja_asunto').text(queja.titulo);
+                        $('#queja_municipio').text(queja.municipio);
+                        $('#queja_cliente').text(queja.cliente);
+                        $('#queja_descripcion').text(queja.descripcion);
+                        startCountdown();
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            $('#btn-save').click(function (e) {
+                $('#tramite-form').submit();
+
+            });
+            $('#tramite-form').submit(function (e) {
+                e.preventDefault();
+                var tramiteId = $('#tramite_id').val();
+                var respuesta = $('#respuesta').val();
+                var conclusionQueja = $('#conclusion_queja').val();
+                var nivelSolucion = $('#nivel_solucion').val();
+
+                var formData = new FormData();
+                formData.append('tramiteId', tramiteId);
+                formData.append('respuesta', respuesta);
+                formData.append('conclusion_queja', conclusionQueja);
+                formData.append('nivel_solucion', nivelSolucion);
+                formData.append('adjunto', $('#formFile')[0].files[0]);
+
+                $.ajax({
+                    url: '/siapdpv/resp_tramite/',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.success) {
+                            mostrarNotificacion('success', 'top-end', data.message);
+                        } else {
+                            mostrarNotificacion('error', 'top-end', data.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
+
+
+        // Función para obtener el valor de una cookie por su nombre
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function startCountdown() {
+            var endDateInput = $('#fecha_respuesta').val(); // Obtener el valor del campo de entrada de fecha
+            var endDateParts = endDateInput.split('-'); // Dividir la fecha en partes: [año, mes, día]
+
+            // Crear una instancia de Date utilizando las partes de la fecha en el orden correcto (año, mes - 1, día)
+            var endDate = new Date(endDateParts[0], endDateParts[1] - 1, endDateParts[2]).getTime();
+
+            if (isNaN(endDate)) {
+                // Manejar el caso en que la fecha ingresada sea inválida
+                console.error("Fecha ingresada inválida");
+                return;
+            }
+
+            var countdownId = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = endDate - now;
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                $("#days").text(days.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false}));
+                $("#hours").text(hours.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false}));
+                $("#minutes").text(minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false}));
+                $("#seconds").text(seconds.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false}));
+
+                if (distance < 0) {
+                    clearInterval(countdownId);
+                    $("#countdown").text("¡Conteo regresivo finalizado!");
+                }
+            }, 1000);
+        }
+
+
+    </script>
+{% endblock %}

@@ -143,7 +143,6 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 LOGIN_URL = '/login/'  # URL para la vista de inicio de sesión
 LOGOUT_URL = '/'  # URL para la vista de cierre de sesión
 LOGIN_REDIRECT_URL = '/'  # URL a la que se redirige después del inicio de sesión exitoso

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Queja, Demanda, Solicitud, Nota, Documento, Tramite
+from .models import Queja, Demanda, Solicitud, Documento, Tramite
 from ..customUser.models import Organismo, Departamento
 
 
@@ -29,7 +29,7 @@ class OrganismoAdmin(admin.ModelAdmin):
 
 class DepartamentoAdmin(admin.ModelAdmin):
     # Personaliza la visualización y el comportamiento de Departamento en el administrador
-    pass
+    list_display = ['nombre', 'noRad']
 
 class TramiteAdmin(admin.ModelAdmin):
     # Personaliza la visualización y el comportamiento de Tramite en el administrador
@@ -39,7 +39,7 @@ class TramiteAdmin(admin.ModelAdmin):
 admin.site.register(Queja, QuejaAdmin)
 admin.site.register(Demanda, DenunciaAdmin)
 admin.site.register(Solicitud, SolicitudAdmin)
-admin.site.register(Nota, NotaAdmin)
+
 admin.site.register(Documento, DocumentoAdmin)
 admin.site.register(Organismo, OrganismoAdmin)
 admin.site.register(Departamento, DepartamentoAdmin)

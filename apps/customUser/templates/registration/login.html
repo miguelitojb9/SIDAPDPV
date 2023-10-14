@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}
-    Login - SIAPDPV
+    Login - SAPV
 {% endblock %}
 
 {% block cotainer_body %}
@@ -18,7 +18,7 @@
                             <div class="d-flex justify-content-center py-4">
                                 <a href="" class="logo d-flex align-items-center w-auto">
                                     <img src="{% static 'assets/img/logo.png' %}" alt="">
-                                    <span class="d-none d-lg-block">SIAPDPV</span>
+                                    <span class="d-none d-lg-block">SAPV</span>
                                 </a>
                             </div><!-- End Logo -->
 
@@ -27,8 +27,8 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                        <p class="text-center small">Enter your username & password to login</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Sistema de Atención a la Población de la Vivienda</h5>
+                                        <p class="text-center small">Entre su usuario y contraseña</p>
                                     </div>
 
                                     <form class="row g-3 needs-validation" novalidate method="post">
@@ -38,12 +38,13 @@
 
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                            <button class="btn btn-primary w-100" type="submit">Entrar</button>
                                         </div>
                                         <div class="col-12">
-                                            <p class="small mb-0">Don't have account? <a href="{% url 'register' %}">Create
-                                                an account</a> or you have forgot? <a href="">Reset
-                                                a password</a>
+                                            <p class="small mb-0">No tienes usuario? <a href="{% url 'register' %}">Crear un usuario
+                                            </a>
+{#                                                or you have forgot? <a href="">Reset#}
+{#                                                a password</a>#}
                                             </p>
                                         </div>
 
@@ -58,7 +59,7 @@
                                 <!-- You can delete the links only if you purchased the pro version. -->
                                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                                Designed by <a href="#">Mike</a>
+{#                                Designed by <a href="#">Mike</a>#}
                             </div>
 
                         </div>

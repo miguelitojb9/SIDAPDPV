@@ -38,21 +38,6 @@
 
             <!-- End Clientes Nav -->
 
-            <!-- End departamento Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-gem"></i><span>Departamentos</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="">
-                            <i class="bi bi-circle"></i><span>Gestión Departamento</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </li>
-            <!-- End departamento Nav -->
         {% endif %}
 
 
@@ -64,84 +49,75 @@
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="quejas-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    {% if user.role == 'client' %}
+
+                {% if user.role == 'client' %}
+                    <li>
                         <a href="{% url 'quejas_list' %}">
                             <i class="bi bi-circle "></i><span>Mis Quejas</span>
                         </a>
-                    {% elif user.departamento is not None %}
+                    </li>
+                {% elif user.departamento is not None or user.role %}
+                    <li>
                         <a href="{% url 'quejas_list' %}">
                             <i class="bi bi-circle "></i><span>Tramitar Quejas</span>
+
                         </a>
-                    {% elif user.role == 'admin' %}
+                    </li>
+                    <li>
+                        <a href="{% url 'lista_tramites' %}">
+                            <i class="bi bi-circle "></i><span>Tramites</span>
+
+                        </a>
+                    </li>
+                {% elif user.role == 'admin' %}
+                    <li>
                         <a href="{% url 'quejas_list' %}">
                             <i class="bi bi-circle "></i><span>Clasificar Quejas</span>
                         </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'lista_tramites' %}">
+                            <i class="bi bi-circle "></i><span>Tramites</span>
+
+                        </a>
+                    </li>
 
 
-                    {% endif %}
+                {% endif %}
 
-                </li>
 
             </ul>
         </li>
         <!-- End Quejas Nav -->
-        <!--  Denuncia Nav -->
-        <li class="nav-item">
-            <a class="nav-link" data-bs-target="#denuncia-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Denuncia</span><i
-                    class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="denuncia-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    {% if user.role == 'client' %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Mis Denuncia</span>
-                        </a>
-                    {% elif user.role == 'admin' %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Clasificar Denuncia</span>
-                        </a>
-
-                    {% elif user.departamentos %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Tramitar Denuncia</span>
-                        </a>
-                    {% endif %}
-
-                </li>
-
-            </ul>
-        </li>
-        <!-- End Denuncia Nav -->
-        <!--  Demanda Nav -->
-        <li class="nav-item">
-            <a class="nav-link" data-bs-target="#demanda-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>Demanda</span><i
-                    class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="demanda-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    {% if user.role == 'client' %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Mis Demanda</span>
-                        </a>
-                    {% elif user.role == 'admin' %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Clasificar Demanda</span>
-                        </a>
-
-                    {% elif user.departamentos %}
-                        <a href="">
-                            <i class="bi bi-circle "></i><span>Tramitar Demanda</span>
-                        </a>
-                    {% endif %}
-
-                </li>
-
-            </ul>
-        </li>
-        <!-- End Demanda Nav -->
+{#        <!--  Denuncia Nav -->#}
+{#        <li class="nav-item">#}
+{#            <a class="nav-link" data-bs-target="#denuncia-nav" data-bs-toggle="collapse" href="#">#}
+{#                <i class="bi bi-menu-button-wide"></i><span>Denuncia</span><i#}
+{#                    class="bi bi-chevron-down ms-auto"></i>#}
+{#            </a>#}
+{#            <ul id="denuncia-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">#}
+{#                <li>#}
+{#                    {% if user.role == 'client' %}#}
+{#                        <a href="">#}
+{#                            <i class="bi bi-circle "></i><span>Mis Denuncia</span>#}
+{#                        </a>#}
+{#                    {% elif user.role == 'admin' %}#}
+{#                        <a href="">#}
+{#                            <i class="bi bi-circle "></i><span>Clasificar Denuncia</span>#}
+{#                        </a>#}
+{##}
+{#                    {% elif user.departamentos %}#}
+{#                        <a href="">#}
+{#                            <i class="bi bi-circle "></i><span>Tramitar Denuncia</span>#}
+{#                        </a>#}
+{#                    {% endif %}#}
+{##}
+{#                </li>#}
+{##}
+{#            </ul>#}
+{#        </li>#}
+{#        <!-- End Denuncia Nav -->#}
+{#    #}
 
 
         <!-- End F.A.Q Page Nav -->

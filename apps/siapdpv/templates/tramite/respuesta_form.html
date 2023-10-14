@@ -1,0 +1,22 @@
+{% load crispy_forms_tags %}
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="id_respuesta">Respuesta:</label>
+    {{ form.respuesta|crispy }}
+  </div>
+  <div class="form-group">
+    <label for="id_adjunto">Adjunto:</label>
+    {{ form.adjunto|crispy }}
+  </div>
+  <div class="form-group">
+    <label for="id_conclusion_queja">Conclusión de la queja:</label>
+    {{ form.conclusion_queja|crispy }}
+  </div>
+  <div class="form-group">
+    <label for="id_nivel_solucion">Nivel de solución:</label>
+    {{ form.nivel_solucion|crispy }}
+  </div>
+  <button type="submit" class="btn btn-primary">Enviar respuesta</button>
+</form>

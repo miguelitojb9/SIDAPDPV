@@ -1,0 +1,244 @@
+{% load  static %}
+<!-- Modal -->
+<style>#countdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.digit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.digit span {
+    margin-left: 2px;
+}
+
+.progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    animation: countdown-animation 1s linear infinite;
+}
+
+@keyframes countdown-animation {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
+<div class="modal fade" id="responderTramiteModal" tabindex="-1" aria-labelledby="assignDepartmentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignDepartmentModalLabel">Tramite </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row">
+                    <div class="col-xl-6">
+
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column ">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <h5 class="card-title">Detalles del Tramite</h5>
+
+
+                                    <div class="row">
+                                        <input id="tramite_id" style="display: none">
+                                        <input id="fecha_respuesta" style="display: none">
+                                        <div class="col-lg-5 col-md-6 label "><span>Fecha</span></div>
+                                        <div class="col-lg-7 col-md-6"><p id="tramite_fecha"></p></div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-12 col-md-12 label "><span>Expira en</span></div>
+
+
+                                    </div>
+                                    <div class="row">
+
+
+                                        <div id="countdown" class="col-lg-12">
+                                            <!-- Border spinner -->
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div><!-- End Border spinner -->
+                                            <div class="digit" id="days">00</div>
+                                            <span class="divider">:</span>
+                                            <div class="digit" id="hours">00</div>
+                                            <span class="divider">:</span>
+                                            <div class="digit" id="minutes">00</div>
+                                            <span class="divider">:</span>
+                                            <div class="digit" id="seconds">00</div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-7 col-md-6 label "><span>Responsable</span></div>
+                                        <div class="col-lg-12 col-md-12"><p>{{ user.first_name }}</p></div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-7 col-md-6 label "><span>Depto</span></div>
+                                        <div class="col-lg-12 col-md-6"><p>{{ user.departamento }}</p></div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column ">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <form id="tramite-form" method="post" novalidate
+
+                                          enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <label for="respuesta" class="col-form-label">Respuesta:</label>
+                                            <div class="col-lg-12 col-md-12">
+                                                     <textarea class="form-control" id="respuesta" name="respuesta"
+                                                               placeholder="Ingresa tu respuesta"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row-mb-3">
+
+                                            <label for="formFile" class="col-form-label">Adjunto:</label>
+                                            <div class="col-lg-12 col-md-12">
+                                                <input type="file" class="form-control" id="formFile"
+                                                       name="adjunto">
+                                            </div>
+                                        </div>
+                                        <div class="row-mb-3">
+                                            <label for="conclusion_queja">Conclusión de la queja:</label>
+                                            <div class="col-lg-12 col-md-12">
+                                                <select class="form-select" id="conclusion_queja"
+                                                        name="conclusion_queja">
+                                                    <option value="" selected disabled>Selecciona una opción</option>
+                                                    <option value="CR">Con Razón</option>
+                                                    <option value="CRP">Con Razón en Parte</option>
+                                                    <option value="SR">Sin Razón</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-mb-3">
+
+                                            <label for="nivel_solucion">Nivel de solución:</label>
+                                            <div class="col-lg-12 col-md-12">
+                                                <select class="form-select" id="nivel_solucion"
+                                                        name="nivel_solucion">
+                                                    <option value="" selected disabled>Selecciona una opción</option>
+                                                    <option value="S">Solucionado</option>
+                                                    <option value="SP">Solucionado en Parte</option>
+                                                    <option value="SS">Sin Solución</option>
+                                                    <option value="PS">Pendiente a Solución</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-xl-6">
+
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column ">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <h5 class="card-title col-12">Detalles de la Queja</h5>
+
+                                    <input id="tramite_id" style="display: none">
+                                    <div class="row">
+                                        <div class="col-lg-5 col-md-6 label ">Fecha</div>
+                                        <div class="col-lg-7 col-md-6"><p id="queja_fecha"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label ">Municipio</div>
+                                        <div class="col-lg-6 col-md-6"><p id="queja_municipio"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label ">Cliente</div>
+                                        <div class="col-lg-6 col-md-6"><p id="queja_cliente"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 label ">Asunto</div>
+                                        <div class="col-lg-6 col-md-6"><p id="queja_asunto"></p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-7 col-md-3 label ">Descripción</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12"><p class="form-control"
+                                                                            id="queja_descripcion"></p>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body profile-card pt-4 d-flex flex-column ">
+
+                                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                    <div id="preview-container"></div>
+                                    <div id="info-container"></div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btn-save">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
