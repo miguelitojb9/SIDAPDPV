@@ -10,12 +10,11 @@
             <a href="" class="logo d-flex">
                 <img src="{% static 'assets/img/logo.png' %}" alt="">
                 <span class="d-none d-lg-block">SAPV </span>
-                 Sistema de Atención a la Población de la Vivienda
+                Sistema de Atención a la Población de la Vivienda
             </a>
 
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
-
 
 
         <nav class="header-nav ms-auto">
@@ -221,8 +220,6 @@
                         </li>
 
 
-
-
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -263,16 +260,17 @@
         <section class="section dashboard">
             <div class="row">
                 {% block content_dashboar %}
+                     {% include 'admin/salescard.html' %}
                     <!-- Left side columns -->
                     <div class="col-lg-8">
                         <div class="row">
                             {% block left_side_columns %}
                                 <!-- Sales Card -->
-                                {% include 'admin/salescard.html' %}
+
                                 <!-- End Sales Card -->
 
                                 <!-- Recent Sales -->
-                                {% include 'admin/recentsales.html' %}
+
                                 <!-- End Recent Sales -->
                             {% endblock %}
                         </div>
@@ -283,20 +281,29 @@
                     <div class="col-lg-4">
                         <div class="row">
                             {% block right_side_columns %}
+
+
+
                                 <!-- Recent Activity -->
                                 <!-- End Recent Activity -->
                                 <!-- Website Traffic -->
-                                {% include 'admin/websitetraffic.html' %}
+
                                 <!-- End Website Traffic -->
-                                 <!-- Reports -->
-                                {% include 'admin/reports.html' %}
+                                <!-- Reports -->
+                                {#                                {% include 'admin/reports.html' %}#}
                                 <!-- End Reports -->
-{#                                <!-- Top Selling -->#}
-{#                                {% include 'admin/topselling.html' %}#}
-{#                                <!-- End Top Selling -->#}
+                                {#                                <!-- Top Selling -->#}
+                                {#                                {% include 'admin/topselling.html' %}#}
+                                {#                                <!-- End Top Selling -->#}
                             {% endblock %}
                         </div>
                     </div>
+                     {% include 'admin/websitetraffic.html' %}
+                    {#                    <div class="col-lg-12">#}
+                    {#                        <div class="row">#}
+                    {#                            {% include 'admin/websitetraffic.html' %}#}
+                    {#                        </div>#}
+                    {#                    </div>#}
                     <!-- End Right side columns -->
                 {% endblock %}
             </div>
@@ -323,25 +330,44 @@
     <script>
         $(document).ready(function () {
             var intervalId; // Variable para almacenar el ID del intervalo
-            console.log($('#filtro-seleccionado-quejas').text());
 
             function actualizarDatos() {
                 $.ajax({
                     url: "{% url 'obtener_datos_actualizados' %}",
                     type: "GET",
                     dataType: "json",
-                    data:{
-                        'quejas-filtro':$('#filtro-seleccionado-quejas').text(),
+                    data: {
+                        'quejas-filtro': $('#filtro-seleccionado-quejas').text(),
                     },
                     success: function (response) {
                         // Actualizar los elementos de la página con los datos recibidos
                         $('#quejas').text(response.quejas);
-                        $('#denuncia').text(response.denuncia);
-                        $('#demanda').text(response.demanda);
+                        $('#quejas_pendientes').text(response.quejas_pendientes);
+                        $('#queja_en_tramite').text(response.queja_en_tramite);
+                        $('#quejas_atendidas').text(response.quejas_atendidas);
+                        {#$('#denuncia').text(response.denuncia);#}
+                        {#$('#demanda').text(response.demanda);#}
                         $('#clientes').text(response.clientes);
                     },
                     error: function (xhr, status, error) {
 
+                    }
+                });
+                // Seleccionar el elemento del gráfico
+                var chart = echarts.init(document.getElementById('trafficChart'));
+
+                // Realizar la solicitud AJAX al servidor
+                $.ajax({
+                    url: '/datos-departamentos/',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Actualizar el gráfico con los datos recibidos
+                        chart.setOption(response.chartOptions);
+                        console.log(response)
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error al obtener los datos:', error);
                     }
                 });
             }
@@ -365,19 +391,19 @@
 
             $('.quejas-filter .dropdown-item ').on('click', function () {
                 filtro = this.text;
-              $('#filtro-seleccionado-quejas').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+                $('#filtro-seleccionado-quejas').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
             });
             $('.denuncia-filter .dropdown-item ').on('click', function () {
                 filtro = this.text;
-              $('#filtro-seleccionado-denuncia').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+                $('#filtro-seleccionado-denuncia').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
             });
             $('.demanda-filter .dropdown-item ').on('click', function () {
                 filtro = this.text;
-              $('#filtro-seleccionado-demanda').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+                $('#filtro-seleccionado-demanda').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
             });
             $('.clientes-filter .dropdown-item ').on('click', function () {
                 filtro = this.text;
-              $('#filtro-seleccionado-clientes').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
+                $('#filtro-seleccionado-clientes').text('| ' + filtro.charAt(0).toUpperCase() + filtro.slice(1));
             });
         });
     </script>

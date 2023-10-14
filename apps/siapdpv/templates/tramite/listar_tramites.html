@@ -4,7 +4,7 @@
 
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
-            {% if user.role == 'admin' %}
+            {% if user.is_superuser %}
 
                   <div class="filter">
                         <div class="card-icon ">

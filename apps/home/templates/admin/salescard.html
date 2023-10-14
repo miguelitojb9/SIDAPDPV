@@ -1,4 +1,3 @@
-
 <!-- Quejas Card -->
 <div class="col-xxl-4 col-md-6">
     <div class="card info-card sales-card">
@@ -24,87 +23,101 @@
                     <i class="bi bi-emoji-frown"></i>
                 </div>
                 <div class="ps-3">
-                    <h6 id="quejas" ></h6>
-{#                    <span class="text-success small pt-1 fw-bold">12%</span> <span#}
-{#                        class="text-muted small pt-2 ps-1">increase</span>#}
+                    <h6 id="quejas"></h6>
+
 
                 </div>
+                <div class="ps-3">
+                    <span
+                            class="text-muted small pt-2 ps-1">Pendientes</span>
+                    <span class="text-success small pt-1 fw-bold" id="quejas_pendientes"></span>
+                    <br>
+                    <span
+                            class="text-muted small pt-2 ps-1">En Tramite</span>
+                    <span class="text-success small pt-1 fw-bold" id="queja_en_tramite"></span>
+                    <br>
+                    <span
+                            class="text-muted small pt-2 ps-1">Atendidas</span>
+                    <span class="text-success small pt-1 fw-bold" id="quejas_atendidas"></span>
+
+                </div>
+
             </div>
         </div>
 
     </div>
 </div>
 <!-- Quejas Card -->
-<!-- Demandas Card -->
-<div class="col-xxl-4 col-md-6">
-    <div class="card info-card denuncia-card">
-
-        <div class="filter demanda-filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-        </div>
-
-        <div class="card-body">
-            <h5 class="card-title">Demandas <span id="filtro-seleccionado-demanda">| Este Mes</span></h5>
-
-            <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-emoji-neutral"></i>
-                </div>
-                <div class="ps-3">
-                    <h6 id="demanda"></h6>
-
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- End Demandas Card -->
-<!-- Denuncia Card -->
-<div class="col-xxl-4 col-md-6">
-    <div class="card info-card demanda-card">
-
-        <div class="filter denuncia-filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-        </div>
-
-        <div class="card-body">
-            <h5 class="card-title">Denuncia <span id="filtro-seleccionado-denuncia"> Este Mes</span></h5>
-
-            <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-emoji-expressionless"></i>
-                </div>
-                <div class="ps-3">
-                    <h6 id="denuncia"></h6>
-
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- End Denuncia Card -->
+{#<!-- Demandas Card -->#}
+{#<div class="col-xxl-4 col-md-6">#}
+{#    <div class="card info-card denuncia-card">#}
+{##}
+{#        <div class="filter demanda-filter">#}
+{#            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>#}
+{#            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">#}
+{#                <li class="dropdown-header text-start">#}
+{#                    <h6>Filter</h6>#}
+{#                </li>#}
+{##}
+{#                <li><a class="dropdown-item" href="#">Today</a></li>#}
+{#                <li><a class="dropdown-item" href="#">This Month</a></li>#}
+{#                <li><a class="dropdown-item" href="#">This Year</a></li>#}
+{#            </ul>#}
+{#        </div>#}
+{##}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title">Demandas <span id="filtro-seleccionado-demanda">| Este Mes</span></h5>#}
+{##}
+{#            <div class="d-flex align-items-center">#}
+{#                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">#}
+{#                    <i class="bi bi-emoji-neutral"></i>#}
+{#                </div>#}
+{#                <div class="ps-3">#}
+{#                    <h6 id="demanda"></h6>#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#</div>#}
+{#<!-- End Demandas Card -->#}
+{#<!-- Denuncia Card -->#}
+{#<div class="col-xxl-4 col-md-6">#}
+{#    <div class="card info-card demanda-card">#}
+{##}
+{#        <div class="filter denuncia-filter">#}
+{#            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>#}
+{#            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">#}
+{#                <li class="dropdown-header text-start">#}
+{#                    <h6>Filter</h6>#}
+{#                </li>#}
+{##}
+{#                <li><a class="dropdown-item" href="#">Today</a></li>#}
+{#                <li><a class="dropdown-item" href="#">This Month</a></li>#}
+{#                <li><a class="dropdown-item" href="#">This Year</a></li>#}
+{#            </ul>#}
+{#        </div>#}
+{##}
+{#        <div class="card-body">#}
+{#            <h5 class="card-title">Denuncia <span id="filtro-seleccionado-denuncia"> Este Mes</span></h5>#}
+{##}
+{#            <div class="d-flex align-items-center">#}
+{#                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">#}
+{#                    <i class="bi bi-emoji-expressionless"></i>#}
+{#                </div>#}
+{#                <div class="ps-3">#}
+{#                    <h6 id="denuncia"></h6>#}
+{##}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#</div>#}
+{#<!-- End Denuncia Card -->#}
 <!-- Clientes Card -->
 <div class="col-xxl-4 col-md-6">
     <div class="card info-card customers-card">
@@ -126,7 +139,7 @@
             <h5 class="card-title">Clientes <span id="filtro-seleccionado-clientes">| Este Mes</span></h5>
 
             <div class="d-flex align-items-center">
-                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-people"></i>
                 </div>
                 <div class="ps-3">
@@ -139,6 +152,8 @@
 
     </div>
 </div>
+<!-- End Clientes Card --><!-- Clientes Card -->
+   {% include 'admin/reports.html' %}
 <!-- End Clientes Card -->
 
 

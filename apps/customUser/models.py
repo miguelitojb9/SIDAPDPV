@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
-
+from django.core.exceptions import ValidationError
 
 
 class Departamento(models.Model):
@@ -14,6 +14,7 @@ class Departamento(models.Model):
 
 class Organismo(models.Model):
     nombre = models.CharField(max_length=200)
+    noRad = models.CharField(max_length=200, null=True, blank=True)
 
 
 class CustomUserManager(BaseUserManager):
@@ -34,12 +35,10 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     ADMIN = 'admin'
-    SECRETARY = 'secretary'
     CLIENT = 'client'
 
     ROLE_CHOICES = [
         (ADMIN, 'Administrator'),
-        (SECRETARY, 'Secretary'),
         (CLIENT, 'Client'),
     ]
 
@@ -73,13 +72,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    user_name = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     address = models.CharField(max_length=100)
     municipality = models.CharField(max_length=50, choices=MUNICIPIOS_CHOICES)
     ci = models.CharField(max_length=15)
-    departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT, null=True, blank=True)
+
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, null=True, blank=True)
+    organismo = models.ForeignKey(Organismo, on_delete=models.CASCADE, null=True, blank=True)
 
     profile_photo = models.ImageField(upload_to='profile_photos', blank=True, null=True)
     # No se incluye el campo 'phones' aquí
@@ -92,6 +94,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = CustomUserManager()
+
+    def save(self, *args, **kwargs):
+        if self.departamento and self.organismo:
+            raise ValidationError("A user cannot be associated with both a department and an organization.")
+        super().save(*args, **kwargs)
 
 
 class PhoneNumber(models.Model):

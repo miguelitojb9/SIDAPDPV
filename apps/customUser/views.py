@@ -139,7 +139,7 @@ class LoginView(View):
         return render(request, 'registration/login.html', {'form': form})
 
 
-class LogoutView(View):
+class LogoutView(LoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect(str(reverse_lazy('login')))

@@ -11,7 +11,7 @@ from .models import Queja
 from datetime import datetime
 from django.http import HttpResponse
 import openpyxl
-from openpyxl.styles import Alignment, Font
+from openpyxl.styles import Alignment, Font, Border, Side
 from datetime import date
 
 
@@ -83,32 +83,6 @@ def load_queja_info(request):
 
     # Renderiza un template que contenga la información de la queja en el modal
     return JsonResponse({'data': queja_dict})
-
-
-@login_required()
-def assign_department(request):
-    if request.method == 'POST':
-        queja_id = request.POST.get('queja_id')
-        departamento_id = request.POST.get('departamento_id')
-        queja = get_object_or_404(Queja, id=queja_id)
-        departamento = get_object_or_404(Departamento, id=departamento_id)
-        queja.departamento = departamento
-        queja.save()
-
-        # Convertir el objeto Queja a un diccionario
-        queja_dict = {
-            'id': queja.id,
-            'titulo': queja.titulo,
-            'descripcion': queja.descripcion,
-            'departamento': {
-                'id': departamento.id,
-                'nombre': departamento.nombre
-            }
-        }
-
-        return JsonResponse({'success': True, 'queja': queja_dict})
-    else:
-        return JsonResponse({'success': False})
 
 
 @login_required()
@@ -249,9 +223,7 @@ def load_tramite_info(request):
     # Renderiza un template que contenga la información de la queja en el modal
     return JsonResponse({'data': tramite_dict})
 
-import openpyxl
-from openpyxl.styles import Alignment, Font, Border, Side
-from datetime import date
+
 
 
 @login_required
