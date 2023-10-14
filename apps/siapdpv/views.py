@@ -9,6 +9,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import Queja
 from datetime import datetime
+from django.http import HttpResponse
+import openpyxl
+from openpyxl.styles import Alignment, Font
+from datetime import date
+
 
 class QuejaCreateView(LoginRequiredMixin, CreateView):
     model = Queja
@@ -193,7 +198,7 @@ class CrearRespuestaTramiteView(LoginRequiredMixin, View):
 
 class ListarTramitesDepartamentoView(ListView):
     model = Tramite
-    template_name = 'tramite/listar_tramites_departamento.html'  # Reemplaza con la ruta de tu plantilla
+    template_name = 'tramite/listar_tramites.html'  # Reemplaza con la ruta de tu plantilla
     context_object_name = 'tramites'
 
     def get_queryset(self):
@@ -243,3 +248,85 @@ def load_tramite_info(request):
 
     # Renderiza un template que contenga la información de la queja en el modal
     return JsonResponse({'data': tramite_dict})
+
+import openpyxl
+from openpyxl.styles import Alignment, Font, Border, Side
+from datetime import date
+
+
+@login_required
+def exportar_a_excel(request):
+    # Obtén tus datos para exportar, por ejemplo, desde tu modelo
+    datos = Tramite.objects.filter(nivel_solucion__isnull=False)
+
+    # Crea un nuevo archivo de Excel
+    libro_excel = openpyxl.Workbook()
+    hoja_excel = libro_excel.active
+    # Agrega información adicional al archivo Excel
+    fecha_actual = date.today().strftime('%Y-%m-%d')
+    nombre_empresa = "Nombre de la empresa"
+    nombre_aplicacion = "Nombre de la aplicación web"
+    hoja_excel.cell(row=1, column=1, value=f"Fecha:")
+    hoja_excel.cell(row=1, column=2, value=f"{fecha_actual}")
+    hoja_excel.cell(row=2, column=1, value=f"Empresa:")
+    hoja_excel.cell(row=2, column=2, value=f"{nombre_empresa}")
+    hoja_excel.cell(row=3, column=1, value=f"Aplicación:")
+    hoja_excel.cell(row=3, column=2, value=f"{nombre_aplicacion}")
+    hoja_excel.cell(row=4, column=2, value=f"")
+
+
+    # Agrega espacio adicional al encabezado
+    encabezados = ['Fecha', 'No. Rad', 'Código', 'Procedencia', 'Nombre y Apellidos', 'Descripción', 'Departamento',
+                   'Fecha Término', 'Conclusión', 'Nivel de Solución']
+    hoja_excel.append(encabezados)
+    for i in range(1, 6):
+        for celda in hoja_excel[i]:
+            celda.font = Font(bold=True)
+            celda.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+            hoja_excel.row_dimensions[1].height = 30
+    # Crea el estilo de borde
+    borde = Border(top=Side(style='thin'), bottom=Side(style='thin'))
+
+    # Aplica el borde a la fila 4
+    for celda in hoja_excel[5]:
+        celda.border = borde
+
+    # Agrega los datos a las filas y centra el texto
+    for dato in datos:
+        fila = [dato.fecha_creacion.strftime('%Y-%m-%d'), dato.queja_set.first().noRadicacion, dato.codificacion,
+                dato.queja_set.first().municipio, f"{dato.queja_set.first().recurrente.first_name} {dato.queja_set.first().recurrente.last_name}",
+                dato.queja_set.first().descripcion, dato.departamento_asignado.nombre, dato.fecha_modificacion.strftime('%Y-%m-%d'),
+                dato.conclusion_queja, dato.nivel_solucion]
+        hoja_excel.append(fila)
+        for celda in hoja_excel[hoja_excel.max_row]:
+            celda.alignment = Alignment(horizontal='center')
+
+    # Ajusta automáticamente el ancho de las columnas en la primera fila
+    for columna in hoja_excel.columns:
+        max_length = 0
+        columna_letra = columna[0].column_letter
+        for celda in columna:
+            try:
+                if len(str(celda.value)) > max_length:
+                    max_length = len(celda.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2  # Ajuste de ancho más un espacio adicional
+        hoja_excel.column_dimensions[columna_letra].width = adjusted_width
+
+
+    # Fija la primera fila
+    hoja_excel.freeze_panes = 'A6'
+
+    # Genera el nombre del archivo con la fecha actual
+    fecha_actual = date.today().strftime('%Y-%m-%d')
+    nombre_archivo = f"{fecha_actual} estadistico SAPV.xlsx"
+
+    # Crea una respuesta HTTP con el archivo Excel adjunto
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+
+    # Guarda el archivo Excel en la respuesta HTTP
+    libro_excel.save(response)
+
+    return response

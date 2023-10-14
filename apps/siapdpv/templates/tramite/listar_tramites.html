@@ -4,11 +4,15 @@
 
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
-            {% if user.role == 'client' %}
-                <div class="filter">
+            {% if user.role == 'admin' %}
+
+                  <div class="filter">
+                        <div class="card-icon ">
+                              <a href="{% url 'exportar_a_excel' %}"><i class="bi bi-printer"></i></a>
+                        </div>
 
 
-                </div>
+                    </div>
 
 
 
@@ -70,7 +74,7 @@
                                             </a>
 
                                             |
-                                            <a href=""><i class="bi bi-printer"></i></a>
+
                                         </div>
 
                                     </th>
