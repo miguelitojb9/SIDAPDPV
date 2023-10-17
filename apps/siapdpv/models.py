@@ -114,10 +114,10 @@ class Queja(models.Model):
     def get_municipio(self):
         return self.get_municipio_display()
 
-    def clean(self):
-        if self.recurrente.departamento:
-            raise ValidationError("The complainant cannot have an assigned department.")
-        super().clean()
+    # def clean(self):
+    #     if self.recurrente.departamento:
+    #         raise ValidationError("The complainant cannot have an assigned department.")
+    #     super().clean()
 
 
 class Demanda(models.Model):

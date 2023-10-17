@@ -6,13 +6,13 @@
         <div class="card recent-sales overflow-auto">
             {% if user.is_superuser %}
 
-                  <div class="filter">
-                        <div class="card-icon ">
-                              <a href="{% url 'exportar_a_excel' %}"><i class="bi bi-printer"></i></a>
-                        </div>
-
-
+                <div class="filter">
+                    <div class="card-icon ">
+                        <a href="{% url 'exportar_a_excel' %}"><i class="bi bi-printer"></i></a>
                     </div>
+
+
+                </div>
 
 
 
@@ -210,10 +210,12 @@
                         // Actualiza el contenido del modal con la información de la queja
 
                         var tramite = data.data;
-                        console.log(tramite);
+
                         var queja = data.data.queja_dict
+                        console.log(tramite);
 
                         $('#det_tramite_id').val(tramite.id);
+                        $('#dpto_tramite').text(tramite.departamento);
                         $('#det_tramite_fecha').text(tramite.fecha);
                         $('#det_expira_en').text(tramite.dias_respuesta + ' días');
                         $('#det_tramite_responsable').text(tramite.responsable);
@@ -226,7 +228,7 @@
                         $('#queja_fecha').text(queja.fecha);
                         $('#queja_asunto').text(queja.titulo);
                         $('#queja_municipio').text(queja.municipio);
-                        $('#queja_cliente').text(queja.cliente);
+                        $('#cliente').text(queja.cliente);
                         $('#queja_descripcion').text(queja.descripcion);
                         startCountdown();
 

@@ -213,7 +213,8 @@ def load_tramite_info(request):
             'id': tramite.queja_set.first().id,
             'titulo': tramite.queja_set.first().asunto,
             'municipio': tramite.queja_set.first().municipio,
-            'cliente': tramite.queja_set.first().recurrente.first_name + ' ' + tramite.queja_set.first().recurrente.last_name,
+            'cliente': tramite.queja_set.first().recurrente.first_name + ' ' +
+                       tramite.queja_set.first().recurrente.last_name,
             'descripcion': tramite.queja_set.first().descripcion,
             'fecha': tramite.queja_set.first().fecha_creacion.strftime('%Y-%m-%d'),
 

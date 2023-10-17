@@ -72,7 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    user_name = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)

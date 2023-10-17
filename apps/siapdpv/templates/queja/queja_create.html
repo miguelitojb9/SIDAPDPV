@@ -5,60 +5,62 @@
 {% block pagetitle_section %}
     <li class="breadcrumb-item active"><a href="{% url 'quejas_list' %}">Mis Quejas</a></li>
 {% endblock %}
-{% block left_side_columns %}
+{% block content_dashboar %}
+    {% block left_side_columns %}
 
-    <div class="col-12">
-        <div class="card recent-sales overflow-auto">
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
 
-            {#                                <div class="filter">#}
-            {#                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>#}
-            {#                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">#}
-            {#                                        <li class="dropdown-header text-start">#}
-            {#                                            <h6>Filter</h6>#}
-            {#                                        </li>#}
-            {##}
-            {#                                        <li><a class="dropdown-item" href="#">Today</a></li>#}
-            {#                                        <li><a class="dropdown-item" href="#">This Month</a></li>#}
-            {#                                        <li><a class="dropdown-item" href="#">This Year</a></li>#}
-            {#                                    </ul>#}
-            {#                                </div>#}
+                {#                                <div class="filter">#}
+                {#                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>#}
+                {#                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">#}
+                {#                                        <li class="dropdown-header text-start">#}
+                {#                                            <h6>Filter</h6>#}
+                {#                                        </li>#}
+                {##}
+                {#                                        <li><a class="dropdown-item" href="#">Today</a></li>#}
+                {#                                        <li><a class="dropdown-item" href="#">This Month</a></li>#}
+                {#                                        <li><a class="dropdown-item" href="#">This Year</a></li>#}
+                {#                                    </ul>#}
+                {#                                </div>#}
 
-            <div class="card-body">
-                <h5 class="card-title">Nueva Queja <span>| {{ user.first_name }}</span></h5>
+                <div class="card-body">
+                    <h5 class="card-title">Nueva Queja <span>| {{ user.first_name }}</span></h5>
 
-                <form id="queja-form" class="row g-3 needs-validation" novalidate method="post">
-                    {% csrf_token %}
+                    <form id="queja-form" class="row g-3 needs-validation" novalidate method="post">
+                        {% csrf_token %}
 
-                    <div class="col-md-6">
-                        {{ form| crispy }}
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="archivos" class="form-label">Archivos</label>
-                            <input class="form-control" type="file" id="archivos" name="archivos" multiple>
+                        <div class="col-md-6">
+                            {{ form| crispy }}
                         </div>
-                    </div>
-                    <div class="col-md-6 "></div>
-                    <div class="col-md-3 ">
-                        <button class="btn btn-success w-100" type="submit">Enviar</button>
-                    </div>
-                    <div class="col-md-3 ">
-                        <a href="{% url 'quejas_list' %}"
-                           class="btn btn-danger w-100" type="submit">Cancelar</a>
-                    </div>
 
-                </form>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="archivos" class="form-label">Archivos</label>
+                                <input class="form-control" type="file" id="archivos" name="archivos" multiple>
+                            </div>
+                        </div>
+                        <div class="col-md-6 "></div>
+                        <div class="col-md-3 ">
+                            <button class="btn btn-success w-100" type="submit">Enviar</button>
+                        </div>
+                        <div class="col-md-3 ">
+                            <a href="{% url 'quejas_list' %}"
+                               class="btn btn-danger w-100" type="submit">Cancelar</a>
+                        </div>
+
+                    </form>
+                </div>
+
             </div>
-
         </div>
-    </div>
 
-{% endblock %}
+    {% endblock %}
 
-{% block right_side_columns %}
-    <div id="preview-container"></div>
-    <div id="info-container"></div>
+    {% block right_side_columns %}
+        <div id="preview-container"></div>
+        <div id="info-container"></div>
+    {% endblock %}
 {% endblock %}
 
 {% block extra_scripts %}
