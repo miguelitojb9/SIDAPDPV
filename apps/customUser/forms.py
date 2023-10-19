@@ -9,7 +9,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'ci', 'gender', 'address', 'municipality', 'profile_photo', 'password']
+        fields = ['email', 'nombre', 'apellidos', 'ci', 'genero', 'direccion', 'municipio', 'profile_photo', 'password']
 
     def clean_password_confirm(self):
         password = self.cleaned_data.get('password')
@@ -48,11 +48,11 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['departamento', 'first_name', 'last_name', 'email', 'role', 'password']
+        fields = ['departamento', 'nombre', 'apellidos', 'email', 'role', 'password']
         widgets = {
             'departamento': forms.Select(attrs={"class": "form-select"}),
-            'first_name': forms.TextInput(attrs={"class": "form-control"}),
-            'last_name': forms.TextInput(attrs={"class": "form-control"}),
+            'nombre': forms.TextInput(attrs={"class": "form-control"}),
+            'apellidos': forms.TextInput(attrs={"class": "form-control"}),
             'email': forms.EmailInput(attrs={"class": "form-control"}),
             'role': forms.Select(attrs={"class": "form-select"}),
             'password': forms.PasswordInput(attrs={"class": "form-control"}),

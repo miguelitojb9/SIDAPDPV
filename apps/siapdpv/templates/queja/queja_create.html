@@ -25,7 +25,7 @@
                 {#                                </div>#}
 
                 <div class="card-body">
-                    <h5 class="card-title">Nueva Queja <span>| {{ user.first_name }}</span></h5>
+                    <h5 class="card-title">Nueva Queja <span>| {{ user.nombre }}</span></h5>
 
                     <form id="queja-form" class="row g-3 needs-validation" novalidate method="post">
                         {% csrf_token %}

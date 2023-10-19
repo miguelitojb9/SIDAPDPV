@@ -53,8 +53,8 @@
                                 <th>{{ queja.fecha_creacion | date:"d/m/Y" }}</th>
                                 <td>{{ queja.get_municipio }}</td>
                                 {% if user.role == 'admin' %}
-                                    <th scope="col">{{ queja.recurrente.first_name }}</th>
-                                    <th scope="col">{{ queja.recurrente.last_name }}</th>
+                                    <th scope="col">{{ queja.recurrente.nombre }}</th>
+                                    <th scope="col">{{ queja.recurrente.apellidos }}</th>
                                 {% endif %}
                                 <td>{{ queja.asunto }}</td>
                                 {% if user.role == 'admin' and user.departamento is None %}

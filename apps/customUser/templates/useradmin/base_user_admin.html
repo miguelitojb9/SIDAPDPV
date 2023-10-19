@@ -37,7 +37,7 @@
                                 {% for user in usuarios %}
                                     <tr>
                                         <th scope="row"><a href="#">{{ user.id }}</a></th>
-                                        <th >{{ user.first_name }}</th>
+                                        <th >{{ user.nombre }}</th>
                                         <th >{{ user.email }}</th>
                                         <th >{{ user.departamento }}</th>
                                         <th >{{ user.role }}</th>
@@ -81,13 +81,7 @@
                             <p>Total: {{ cant_departamentos }}<br> Usuarios: {{ usuarios_en_departamentos }}</p>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="info-box card">
-                            <i class="bi bi-envelope"></i>
-                            <h3>Organismos</h3>
-                            <p>info@example.com<br>contact@example.com</p>
-                        </div>
-                    </div>
+
 
                 </div>
 

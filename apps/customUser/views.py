@@ -76,8 +76,8 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 def UserUpdateView(request):
     if request.method == 'POST':
         user = request.user
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
+        user.nombre = request.POST['nombre']
+        user.apellidos = request.POST['apellidos']
         user.save()
         return JsonResponse({'success': True})
     else:

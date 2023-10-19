@@ -72,11 +72,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    address = models.CharField(max_length=100)
-    municipality = models.CharField(max_length=50, choices=MUNICIPIOS_CHOICES)
+    nombre = models.CharField(max_length=30)
+    apellidos = models.CharField(max_length=30)
+    genero = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    direccion = models.CharField(max_length=100)
+    municipio = models.CharField(max_length=50, choices=MUNICIPIOS_CHOICES)
     ci = models.CharField(max_length=15)
 
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, null=True, blank=True)
@@ -90,7 +90,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['nombre', 'apellidos']
 
     objects = CustomUserManager()
 

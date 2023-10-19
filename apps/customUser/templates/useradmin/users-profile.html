@@ -10,7 +10,7 @@
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                         <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
-                        <h2>{{ user.first_name }} {{ user.last_name }} </h2>
+                        <h2>{{ user.nombre }} {{ user.apellidos }} </h2>
 
                         {% if user.departamento is not None %}
                             <h3>Dpto: {{ user.departamento }}</h3>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Nombre</div>
-                                    <div class="col-lg-9 col-md-8">{{ user.first_name }} {{ user.last_name }}</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.nombre }} {{ user.apellidos }}</div>
                                 </div>
 
                                 <div class="row">
@@ -71,12 +71,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Sexo</div>
-                                    <div class="col-lg-9 col-md-8">{{ user.gender }}</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.genero }}</div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Municipio</div>
-                                    <div class="col-lg-9 col-md-8">{{ user.get_municipality_display }}</div>
+                                    <div class="col-lg-9 col-md-8">{{ user.get_municipio_display }}</div>
                                 </div>
 
                                 <div class="row">
@@ -111,17 +111,17 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="first_name" class="col-md-4 col-lg-3 col-form-label">Nombre</label>
+                                        <label for="nombre" class="col-md-4 col-lg-3 col-form-label">Nombre</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="first_name" type="text" class="form-control" id="first_name"
+                                            <input name="nombre" type="text" class="form-control" id="nombre"
                                                    value="Kevin Anderson">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Apellido</label>
+                                        <label for="apellidos" class="col-md-4 col-lg-3 col-form-label">Apellido</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="last_name" type="text" class="form-control" id="last_name"
+                                            <input name="apellidos" type="text" class="form-control" id="apellidos"
                                                    value="Kevin Anderson">
                                         </div>
                                     </div>

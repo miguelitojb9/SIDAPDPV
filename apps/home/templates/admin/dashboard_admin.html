@@ -8,7 +8,7 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="" class="logo d-flex">
-                <img src="{% static 'assets/img/logo.png' %}" alt="">
+                <img src="{% static 'assets/img/loggo.png' %}" alt="">
                 <span class="d-none d-lg-block">SAPV </span>
                 Sistema de Atención a la Población de la Vivienda
             </a>
@@ -192,7 +192,7 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>{{ user.first_name }}</h6>
+                            <h6>{{ user.nombre }}</h6>
                             {#              <span>Web Designer</span>#}
                         </li>
                         <li>
@@ -242,10 +242,10 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Dashboard</h1>
+            <h1>Panel</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
                     {% block pagetitle_section %}
 
                     {% endblock %}
@@ -312,12 +312,7 @@
 
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
-        <div class="copyright">
-            &copy; <strong><span>SAPV</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            Designed by <a href="#">Mike</a>
-        </div>
+
     </footer><!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

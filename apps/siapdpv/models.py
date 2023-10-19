@@ -1,7 +1,17 @@
+import os
+import shutil
+
 from django.db import models
 from apps.customUser.models import User, Departamento, Organismo
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+
+
+def adjunto_upload_path(instance, filename):
+    # Obtener la codificacion del trámite
+    codificacion = instance.codificacion
+    # Generar la ruta de almacenamiento utilizando la codificacion
+    return f'media/adjuntos/{codificacion}-{instance.id}/{filename}'
 
 
 class Tramite(models.Model):
@@ -21,7 +31,7 @@ class Tramite(models.Model):
     # Campos para la respuesta al trámite
     respuesta = models.TextField(blank=True)
     tiene_respuesta = models.BooleanField(default=False)
-    adjunto = models.FileField(upload_to='adjuntos/', blank=True, null=True)
+    adjunto = models.FileField(upload_to=adjunto_upload_path, blank=True, null=True)
     conclusion_queja = models.CharField(max_length=3, choices=(
         ('CR', 'Con Razón'),
         ('CRP', 'Con Razón en Parte'),
@@ -43,6 +53,24 @@ class Tramite(models.Model):
             self.fecha_respuesta = timezone.now().date() + timezone.timedelta(days=60)
 
         super().save(*args, **kwargs)
+        # Si hay un archivo adjunto y se ha asignado una codificación
+        if self.adjunto and self.codificacion:
+            # Obtener la ruta actual del archivo adjunto
+            file_path = self.adjunto.path
+            # Generar la nueva ruta de almacenamiento utilizando el ID del trámite
+            new_file_path = adjunto_upload_path(self, os.path.basename(file_path))
+            # Obtener la carpeta de destino
+            destination_folder = os.path.dirname(new_file_path)
+            # Crear la carpeta de destino si no existe
+            os.makedirs(destination_folder, exist_ok=True)
+            # Mover el archivo adjunto a la nueva ubicación
+            shutil.move(file_path, new_file_path)
+            # Actualizar el nombre del archivo adjunto en la instancia del modelo
+            self.adjunto.name = new_file_path
+            # Guardar la instancia del modelo nuevamente para reflejar los cambios en la base de datos
+            super().save(update_fields=['adjunto'])
+
+
 
 
 class Queja(models.Model):

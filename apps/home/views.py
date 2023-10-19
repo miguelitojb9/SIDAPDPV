@@ -50,21 +50,21 @@ def obtener_datos_actualizados(request):
     quejas_atendidas = 0
 
 
-    if request.GET.get('quejas-filtro').split('| ')[1] == 'Today':
+    if request.GET.get('quejas-filtro').split('| ')[1] == 'Hoy':
         quejas = Queja.objects.filter(fecha_creacion__day=timezone.now().day).count()
         quejas_pendientes = Queja.objects.filter(enTramite=False, procesado=False,
                                                  fecha_creacion__day=timezone.now().day).count()
         queja_en_tramite = Queja.objects.filter(enTramite=True, procesado=False,
                                                 fecha_creacion__day=timezone.now().day).count()
         quejas_atendidas = Queja.objects.filter(procesado=True, fecha_creacion__day=timezone.now().day).count()
-    elif request.GET.get('quejas-filtro').split('| ')[1] == 'This Month':
+    elif request.GET.get('quejas-filtro').split('| ')[1] == 'Este Mes':
         quejas = Queja.objects.filter(fecha_creacion__month=timezone.now().month).count()
         quejas_pendientes = Queja.objects.filter(enTramite=False, procesado=False,
                                                  fecha_creacion__month=timezone.now().month,fecha_creacion__year=timezone.now().year).count()
         queja_en_tramite = Queja.objects.filter(enTramite=False, procesado=False,
                                                 fecha_creacion__month=timezone.now().month,fecha_creacion__year=timezone.now().year).count()
         quejas_atendidas = Queja.objects.filter(procesado=True, fecha_creacion__month=timezone.now().month,fecha_creacion__year=timezone.now().year).count()
-    elif request.GET.get('quejas-filtro').split('| ')[1] == 'This Year':
+    elif request.GET.get('quejas-filtro').split('| ')[1] == 'Este Año':
         quejas = Queja.objects.filter(fecha_creacion__year=timezone.now().year).count()
         quejas_pendientes = Queja.objects.filter(enTramite=True, procesado=False,
                                                  fecha_creacion__year=timezone.now().year).count()

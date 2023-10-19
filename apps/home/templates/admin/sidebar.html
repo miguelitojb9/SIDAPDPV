@@ -6,7 +6,7 @@
         <li class="nav-item">
             <a class="nav-link " href="{% url 'home' %}">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>Panel</span>
             </a>
         </li>
         <!-- End Dashboard Nav -->
@@ -88,7 +88,7 @@
 
                 {% if user.role == 'client' %}
                     <li>
-                        <a href="">
+                        <a href="{% url 'lista_tramites' %}">
                             <i class="bi bi-circle "></i><span>Quejas en Tramites</span>
                         </a>
                     </li>

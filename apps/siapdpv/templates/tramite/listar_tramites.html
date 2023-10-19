@@ -4,7 +4,7 @@
 
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
-            {% if user.is_superuser %}
+            {% if user.is_superuser and tramites %}
 
                 <div class="filter">
                     <div class="card-icon ">
@@ -38,8 +38,18 @@
 
                             <th scope="col">Codificación</th>
                             <th scope="col">Descripción</th>
-                            <th scope="col">Procesar</th>
 
+                            {% if user.role == 'client' %}
+                                <th scope="col">Conclusion queja</th>
+                                <th scope="col">Nivel solucion</th>
+                                <th scope="col">Tramitador</th>
+                                <th scope="col">Departamento</th>
+                            {% endif %}
+
+
+                        {% endif %}
+                        {% if user.departamento and user.role == 'admin' %}
+                            <th scope="col">Procesar</th>
                         {% endif %}
 
 
@@ -52,20 +62,11 @@
                                 <th>{{ tramite.id }}</th>
                                 <th>{{ tramite.fecha_creacion | date:"d/m/Y" }}</th>
 
-                                {% if not tramite.tiene_respuesta %}
-                                    <th>{{ tramite.codificacion }}</th>
-                                    <th>{{ tramite.queja_set.first.descripcion }}</th>
-                                    <td>
-                                        <a href="#" data-tramite-id="{{ tramite.id }}" class="tramitar-btn"
-                                           data-bs-toggle="modal" data-bs-target="#responderTramiteModal">
-                                            <span class="badge bg-success">Procesar Trámite</span>
-                                        </a>
-                                    </td>
-                                {% else %}
-                                    <th>{{ tramite.usuario_responsable.departamento.nombre }}</th>
-                                    <th>{{ tramite.usuario_responsable.first_name }} {{ tramite.usuario_responsable.last_name }}</th>
-                                    <th>{{ tramite.conclusion_queja }}</th>
-                                    <th>{{ tramite.nivel_solucion }}</th>
+                                {% if not user.departamento and user.role == 'admin' %}
+                                    <th>{{ tramite.departamento_asignado }} </th>
+                                    <th>{{ tramite.usuario_responsable.nombre }} {{ tramite.usuario_responsable.apellidos }}</th>
+                                    <th>{{ tramite.conclusion_queja | default:'en tramite' }}</th>
+                                    <th>{{ tramite.nivel_solucion| default:'en tramite' }}</th>
                                     <th>
                                         <div class="icon">
                                             <a href="#" data-tramite-id="{{ tramite.id }}" class="eyes-btn"
@@ -73,14 +74,36 @@
                                                 <span class="badge bg-success"><i class="bi bi-eye"></i></span>
                                             </a>
 
-                                            |
 
                                         </div>
 
                                     </th>
+                                {% else %}
+
+                                    <th>{{ tramite.codificacion }}</th>
+                                    <th>{{ tramite.queja_set.first.descripcion }}</th>
+
+                                    {% if user.role == 'client' %}
+                                        <th>{{ tramite.conclusion_queja | default:'en tramite' }}</th>
+                                        <th>{{ tramite.nivel_solucion| default:'en tramite' }}</th>
+                                        <th>{{ tramite.usuario_responsable.nombre }} {{ tramite.usuario_responsable.apellidos }}</th>
+                                        <th>{{ tramite.departamento_asignado }} </th>
+                                    {% endif %}
+
+
+                                {% endif %}
+                                {% if user.departamento and user.role == 'admin' %}
+                                    <th>
+                                        <a href="#" data-tramite-id="{{ tramite.id }}" class="tramitar-btn"
+                                           data-bs-toggle="modal" data-bs-target="#responderTramiteModal">
+                                            <span class="badge bg-success">Procesar Trámite</span>
+                                        </a>
+                                    </th>
                                 {% endif %}
 
+
                             </tr>
+
                         {% endfor %}
 
 
@@ -230,6 +253,13 @@
                         $('#queja_municipio').text(queja.municipio);
                         $('#cliente').text(queja.cliente);
                         $('#queja_descripcion').text(queja.descripcion);
+
+
+                        $('#adjunto-det').attr('src', tramite.adjunto);
+                        $('#adjunto-det').attr('width ', '100%');
+                        $('#adjunto-det').attr('height', '50px');
+
+
                         startCountdown();
 
 

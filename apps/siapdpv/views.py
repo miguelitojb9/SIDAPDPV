@@ -23,7 +23,7 @@ class QuejaCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.recurrente = self.request.user
-        form.instance.municipio = self.request.user.get_municipality_display()
+        form.instance.municipio = self.request.user.get_municipio_display()
         response = super().form_valid(form)
 
         archivos = self.request.FILES.getlist('archivos')
@@ -183,7 +183,7 @@ class ListarTramitesDepartamentoView(ListView):
         elif user.role == 'admin':
             return Tramite.objects.filter(tiene_respuesta=True)
         else:
-            return Tramite.objects.filter(tiene_respuesta=True, queja__recurrente=user)
+            return Tramite.objects.filter(queja__recurrente=user)
 
 
 @login_required()
@@ -203,18 +203,19 @@ def load_tramite_info(request):
         'dias_respuesta': diferencia,
         'fecha_respuesta': fecha_respuesta.strftime('%Y-%m-%d'),
 
-        'responsable': tramite.usuario_responsable.first_name + '' + tramite.usuario_responsable.last_name,
+        'responsable': tramite.usuario_responsable.nombre + '' + tramite.usuario_responsable.apellidos,
         'departamento': tramite.departamento_asignado.nombre,
         'respuesta': tramite.respuesta,
         'conclusion_queja': tramite.conclusion_queja,
         'nivel_solucion': tramite.nivel_solucion,
+        'adjunto': tramite.adjunto.url,
 
         'queja_dict': {
             'id': tramite.queja_set.first().id,
             'titulo': tramite.queja_set.first().asunto,
             'municipio': tramite.queja_set.first().municipio,
-            'cliente': tramite.queja_set.first().recurrente.first_name + ' ' +
-                       tramite.queja_set.first().recurrente.last_name,
+            'cliente': tramite.queja_set.first().recurrente.nombre + ' ' +
+                       tramite.queja_set.first().recurrente.apellidos,
             'descripcion': tramite.queja_set.first().descripcion,
             'fecha': tramite.queja_set.first().fecha_creacion.strftime('%Y-%m-%d'),
 
@@ -267,8 +268,8 @@ def exportar_a_excel(request):
     # Agrega los datos a las filas y centra el texto
     for dato in datos:
         fila = [dato.fecha_creacion.strftime('%Y-%m-%d'), dato.queja_set.first().noRadicacion, dato.codificacion,
-                dato.queja_set.first().municipio, f"{dato.queja_set.first().recurrente.first_name} {dato.queja_set.first().recurrente.last_name}",
-                dato.queja_set.first().descripcion, dato.departamento_asignado.nombre, dato.fecha_modificacion.strftime('%Y-%m-%d'),
+                dato.queja_set.first().municipio, f"{dato.queja_set.first().recurrente.nombre} {dato.queja_set.first().recurrente.apellidos}",
+                dato.queja_set.first().descripcion, dato.departamento_asignado.nombre, dato.fecha_respuesta.strftime('%Y-%m-%d'),
                 dato.conclusion_queja, dato.nivel_solucion]
         hoja_excel.append(fila)
         for celda in hoja_excel[hoja_excel.max_row]:

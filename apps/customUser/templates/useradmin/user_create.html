@@ -6,14 +6,6 @@
     <div class="col-12">
         <div class="card recent-sales overflow-auto">
 
-            <div class="filter">
-                <div class="icon">
-                    <a class="icon" href="" data-bs-toggle="tooltip" data-bs-placement="top"
-                       data-bs-original-title="nueva queja"><i class="bi bi-file-earmark-plus-fill"></i></a>
-                </div>
-
-
-            </div>
 
             <div class="card-body">
                 <h5 class="card-title">Usuario </h5>
@@ -31,21 +23,21 @@
                         {% endif %}
                     </div>
                     <div class="col-md-6">
-                        {{ form.first_name.label_tag }}
-                        {{ form.first_name }}
-                        {% if form.first_name.errors %}
+                        {{ form.nombre.label_tag }}
+                        {{ form.nombre }}
+                        {% if form.nombre.errors %}
                             <div class="invalid-feedback">
-                                {{ form.first_name.errors|join:", " }}
+                                {{ form.nombre.errors|join:", " }}
                             </div>
                         {% endif %}
                     </div>
 
                     <div class="col-md-6">
-                        {{ form.last_name.label_tag }}
-                        {{ form.last_name }}
-                        {% if form.last_name.errors %}
+                        {{ form.apellidos.label_tag }}
+                        {{ form.apellidos }}
+                        {% if form.apellidos.errors %}
                             <div class="invalid-feedback">
-                                {{ form.last_name.errors|join:", " }}
+                                {{ form.apellidos.errors|join:", " }}
                             </div>
                         {% endif %}
                     </div>
